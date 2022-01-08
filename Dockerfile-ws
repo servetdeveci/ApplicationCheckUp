@@ -1,0 +1,25 @@
+
+FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS base
+WORKDIR /app
+
+FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
+WORKDIR /src
+
+COPY PowerPlant/PowerPlant.Domain/*.csproj PowerPlant/PowerPlant.Domain/
+COPY PowerPlant/PowerPlant.FetchingData.WorkerService/*.csproj  PowerPlant/PowerPlant.FetchingData.WorkerService/
+COPY Shared/Shared.Domain/*.csproj Shared/Shared.Domain/
+
+RUN dotnet restore PowerPlant/PowerPlant.FetchingData.WorkerService/PowerPlant.FetchingData.WorkerService.csproj
+
+COPY . .
+WORKDIR "/src/PowerPlant/PowerPlant.FetchingData.WorkerService"
+RUN dotnet build "PowerPlant.FetchingData.WorkerService.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "PowerPlant.FetchingData.WorkerService.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "PowerPlant.FetchingData.WorkerService.dll"]
+

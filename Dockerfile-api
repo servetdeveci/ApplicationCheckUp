@@ -1,0 +1,28 @@
+
+FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS base
+WORKDIR /app
+
+FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
+WORKDIR /src
+
+COPY PowerPlant/PowerPlant.API/*.csproj PowerPlant/PowerPlant.API/
+COPY PowerPlant/PowerPlant.Services/*.csproj PowerPlant/PowerPlant.Services/
+COPY PowerPlant/PowerPlant.Domain/*.csproj PowerPlant/PowerPlant.Domain/
+COPY PowerPlant/PowerPlant.Infrastructure/*.csproj PowerPlant/PowerPlant.Infrastructure/
+
+COPY Shared/Shared.Domain/*.csproj Shared/Shared.Domain/
+COPY Shared/Shared.Infrastructure/*.csproj Shared/Shared.Domain/
+
+RUN dotnet restore PowerPlant/PowerPlant.API/PowerPlant.API.csproj
+
+COPY . .
+WORKDIR "/src/PowerPlant/PowerPlant.API"
+RUN dotnet build "PowerPlant.API.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "PowerPlant.API.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "PowerPlant.API.dll"]
