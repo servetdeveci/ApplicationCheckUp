@@ -1,4 +1,5 @@
 ﻿using Shared.Domain.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -20,6 +21,7 @@ namespace ApplicationHealth.Domain.Entities
         /// </summary>
         [Range(1, short.MaxValue)]
         public short Interval { get; set; } = 1;
+        public DateTime LastControlDateTime { get; set; }
         public IEnumerable<AppContact> NotificationContacts { get; set; }
         public IEnumerable<AppNotification> Notifications { get; set; }
     }

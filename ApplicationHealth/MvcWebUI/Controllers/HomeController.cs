@@ -41,10 +41,14 @@ namespace ApplicationHealth.MvcWebUI.Controllers
         }
         public IActionResult _UpdateApp(int id)
         {
-            var model = _appService.GetById(id);
-            return PartialView("_UpdateApp", model);
+            return PartialView("_UpdateApp", _appService.GetById(id));
         }
-
+        [HttpPost]
+        public JsonResult UpdateApp(AppDef app)
+        {
+            return new JsonResult(_appService.Update(app));
+        }
+      
         [HttpPost]
         public AppDefDataTable GetAppDefDataTable(BaseFilterParameters filters)
         {

@@ -9,17 +9,21 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
+using Microsoft.Extensions.Logging;
+
 namespace ApplicationHealth.Services.Managers
 {
     public class AppDefManager : IAppDefService
     {
         private readonly IAppDefRepository _appDefRepository;
         private readonly IAppUnitOfWork _unitOfWork;
+        private readonly ILogger<AppDefManager> _logger;
 
-        public AppDefManager(IAppDefRepository appDefRepository, IAppUnitOfWork unitOfWork)
+        public AppDefManager(IAppDefRepository appDefRepository, IAppUnitOfWork unitOfWork, ILogger<AppDefManager> logger)
         {
             _appDefRepository = appDefRepository;
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         public WebUIToast Add(AppDef app)
@@ -27,28 +31,19 @@ namespace ApplicationHealth.Services.Managers
             try
             {
                 _appDefRepository.Add(app);
-                if (_unitOfWork.Commit() > 0)
-                {
-                    return new WebUIToast
-                    {
-                        header = "Başarılı",
-                        icon = "success",
-                        message = "Yeni App eklendi"
-                    };
-                }
-                else
-                {
-                    return new WebUIToast
-                    {
-                        header = "Başarısız",
-                        icon = "error",
-                        message = "Veritabanına kayıt yapılamadı"
-                    };
-                }
+                _unitOfWork.Commit();
+                _logger.LogTrace($"{CrudTwinProperty.CREATE} ==> AppDef: {app.Name} eklendi");
 
+                return new WebUIToast
+                {
+                    header = "Başarılı",
+                    icon = "success",
+                    message = $"{app.Name} kaydı oluşturuldu"
+                };
             }
             catch (Exception ex)
             {
+                _logger.LogError($"{CrudTwinProperty.CREATE} ==> {app.Name} Ex: {ex.Message}");
                 return new WebUIToast
                 {
                     header = "Başarısız",
@@ -62,30 +57,21 @@ namespace ApplicationHealth.Services.Managers
         {
             try
             {
-                _appDefRepository.Delete(GetById(id));
+                var deleted = GetById(id);
+                _appDefRepository.Delete(deleted);
                 _unitOfWork.CommitAsync();
-                if (_unitOfWork.Commit() > 0)
-                {
-                    return new WebUIToast
-                    {
-                        header = "Başarılı",
-                        icon = "success",
-                        message = "Uygulama Silindi"
-                    };
-                }
-                else
-                {
-                    return new WebUIToast
-                    {
-                        header = "Başarısız",
-                        icon = "error",
-                        message = "Veritabanına kayıt yapılamadı"
-                    };
-                }
+                _logger.LogTrace($"{CrudTwinProperty.DELETE} ==> AppDefId: {id} silindi");
 
+                return new WebUIToast
+                {
+                    header = "Başarılı",
+                    icon = "success",
+                    message = $"{deleted.Name} Silindi"
+                };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError($"{CrudTwinProperty.DELETE} ==> AppDefId: {id} Ex: {ex.Message}");
                 return new WebUIToast
                 {
                     header = "Başarısız",
@@ -128,9 +114,40 @@ namespace ApplicationHealth.Services.Managers
             return _appDefRepository.GetById(id);
         }
 
-        public WebUIToast Update(string name, string url, short interval)
+        public WebUIToast Update(AppDef app)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existing = GetById(app.AppDefId);
+                existing.UpdatedBy = "UpdatedUser";
+                existing.UpdatedDate = DateTime.Now;
+                existing.Name = app.Name;
+                existing.Url = app.Url;
+                existing.Interval = app.Interval;
+
+                _appDefRepository.Update(existing);
+                _unitOfWork.Commit();
+                _logger.LogTrace($"{CrudTwinProperty.UPDATE} ==> AppDefId: {app.AppDefId} güncellendi");
+
+                return new WebUIToast
+                {
+                    header = "Başarılı",
+                    icon = "success",
+                    message = $"{existing.Name} Güncellendi"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.UPDATE} ==> AppDefId: {app.AppDefId} Ex: {ex.Message}");
+                return new WebUIToast
+                {
+                    header = "Başarısız",
+                    icon = "error",
+                    message = "Güncellerken bir istisna oluştu"
+                };
+            }
+           
+
         }
     }
 }
