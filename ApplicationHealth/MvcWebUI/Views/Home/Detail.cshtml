@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model ApplicationHealth.Domain.Entities.AppDef
+
+@{
+    ViewData["Title"] = "Detail";
 }
 
 <link href="/lib/DataTables/datatables.min.css" rel="stylesheet" />
@@ -7,10 +9,22 @@
 
 <div class="card mb-3  text-right">
     <div class="card-body">
-        <button onclick="LoadInsertAppPartial()" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#crudModal">
-            <i class="fa fa-plus"></i>
-            Yeni Uygulama
-        </button>
+        <div class="row">
+            <div class="col-3 text-left">
+               Adı: <strong> @Model.Name</strong>
+            </div> 
+            <div class="col-6 text-left">
+               Url: <strong> @Model.Url</strong>
+            </div> 
+            <div class="col-2 text-left">
+               Interval: <strong> @Model.Interval</strong>
+            </div>
+            <div class="col-1 text-right">
+                <a href="/home" class="btn btn-sm btn-outline-secondary">
+                    <i class="fa fa-arrow-left"></i> Geri
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 

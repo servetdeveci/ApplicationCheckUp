@@ -30,6 +30,9 @@ namespace ApplicationHealth.Services.Managers
         {
             try
             {
+                if (ValidateApp(app, out WebUIToast toast))
+                    return toast;
+
                 _appDefRepository.Add(app);
                 _unitOfWork.Commit();
                 _logger.LogTrace($"{CrudTwinProperty.CREATE} ==> AppDef: {app.Name} eklendi");
@@ -40,6 +43,9 @@ namespace ApplicationHealth.Services.Managers
                     icon = "success",
                     message = $"{app.Name} kaydı oluşturuldu"
                 };
+
+
+
             }
             catch (Exception ex)
             {
@@ -52,7 +58,27 @@ namespace ApplicationHealth.Services.Managers
                 };
             }
         }
+        private bool ValidateApp(AppDef app, out WebUIToast mes)
+        {
+            mes = new WebUIToast
+            {
+                header = "Başarısız",
+                icon = "error",
+                message = ""
+            };
+            var validate = string.IsNullOrEmpty(app.Url) || string.IsNullOrEmpty(app.Name);
+            if (validate)
+                mes.message = "Alanlar boş olamaz. ";
+            if (app.Interval < 1)
+                mes.message += "Interval 1 den küçük olamaz";
 
+            Uri uriResult;
+            validate = !(Uri.TryCreate(app.Url, UriKind.Absolute, out uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps));
+            if (validate)
+                mes.message += "Url doğru formatta değil";
+            return validate;
+        }
         public WebUIToast Delete(int id)
         {
             try
@@ -80,7 +106,6 @@ namespace ApplicationHealth.Services.Managers
                 };
             }
         }
-
         public AppDefDataTable GetAppDefDataTable(BaseFilterParameters filters)
         {
 
@@ -103,21 +128,21 @@ namespace ApplicationHealth.Services.Managers
 
             return model;
         }
-
         public AppDef GetByFilter(Expression<Func<AppDef, bool>> predicate)
         {
             throw new NotImplementedException();
         }
-
         public AppDef GetById(int id)
         {
             return _appDefRepository.GetById(id);
         }
-
         public WebUIToast Update(AppDef app)
         {
             try
             {
+                if (ValidateApp(app, out WebUIToast toast))
+                    return toast;
+
                 var existing = GetById(app.AppDefId);
                 existing.UpdatedBy = "UpdatedUser";
                 existing.UpdatedDate = DateTime.Now;
@@ -146,7 +171,7 @@ namespace ApplicationHealth.Services.Managers
                     message = "Güncellerken bir istisna oluştu"
                 };
             }
-           
+
 
         }
     }

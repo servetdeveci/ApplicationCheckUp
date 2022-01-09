@@ -25,6 +25,11 @@ namespace ApplicationHealth.MvcWebUI.Controllers
             _logger.Log(LogLevel.Trace, "uygulama başladı");
             return View();
         }
+        public IActionResult Detail(int id)
+        {
+            return View(_appService.GetById(id));
+
+        }
         public IActionResult _InsertApp()
         {
             return PartialView("_InsertApp");

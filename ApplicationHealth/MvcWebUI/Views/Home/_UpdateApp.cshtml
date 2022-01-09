@@ -7,21 +7,21 @@
 </div>
 <div class="modal-body">
 
-    <div class="row">
-        <div class="col">App Adı</div>
-        <div class="col"><input type="text" class="form-control" value="@Model.Name" id="name" /></div>
+    <div class="row mb-1">
+        <div class="col-4">App Adı</div>
+        <div class="col-8"><input type="text" class="form-control" value="@Model.Name" id="name" /></div>
     </div>
-    <div class="row">
-        <div class="col">Url</div>
-        <div class="col"><input type="text" class="form-control" value="@Model.Url" id="url" /></div>
+    <div class="row mb-1">
+        <div class="col-4">Url</div>
+        <div class="col-8"><input type="text" class="form-control" value="@Model.Url" id="url" /></div>
     </div>
-    <div class="row">
-        <div class="col">Interval</div>
-        <div class="col"><input type="number" class="form-control" value="@Model.Interval" id="interval" /></div>
+    <div class="row mb-1">
+        <div class="col-4">Interval</div>
+        <div class="col-8"><input type="number" class="form-control" value="@Model.Interval" id="interval" /></div>
     </div>
 
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-    <button type="button" class="btn btn-primary" onclick="UpdateApp(@Model.AppDefId)" data-dismiss="modal">Güncelle</button>
+    <button type="button" class="btn btn-primary" onclick="UpdateApp(@Model.AppDefId)">Güncelle</button>
 </div>
