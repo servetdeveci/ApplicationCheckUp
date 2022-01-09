@@ -7,36 +7,39 @@
 
 <div class="card mb-3  text-right">
     <div class="card-body">
-        <button onclick="LoadInsertAppPartial()" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#addApp">Yeni Uygulama</button>
+        <button onclick="LoadInsertAppPartial()" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#addApp">
+            <i class="fa fa-plus"></i>
+            Yeni Uygulama
+        </button>
     </div>
 </div>
 
 
 
-    <div class="card">
-        <div class="card-body">
-            <table class="table" width="100%" id="AppTable">
-                <thead>
-                    <tr class="bg-secondary text-white">
-                        <th class="all">Actions</th>
-                        <th class="all">Application</th>
-                        <th class="all">Url</th>
-                        <th class="all">Interval</th>
-                        <th class="all">CreatedBy</th>
-                        <th class="all">CreatedDate</th>
-                        <th class="all">LastControlDateTime</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
+<div class="card">
+    <div class="card-body">
+        <table class="table" width="100%" id="AppTable">
+            <thead>
+                <tr class="bg-secondary text-white">
+                    <th class="all">Actions</th>
+                    <th class="all">Application</th>
+                    <th class="all">Url</th>
+                    <th class="all">Interval</th>
+                    <th class="all">CreatedBy</th>
+                    <th class="all">CreatedDate</th>
+                    <th class="all">Up/Down</th>
+                </tr>
+            </thead>
+        </table>
     </div>
-    
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="addApp" tabindex="-1" role="dialog" aria-labelledby="crudModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content" id="dynamicContent">
-            
+
         </div>
     </div>
 </div>

@@ -169,8 +169,8 @@ function InitializeDataTable() {
                 "data": "AppDefId",
                 "orderable": false,
                 "render": function (data, type, JsonResultRow, meta) {
-                    var content = '<button onclick="DeleteApp(' + JsonResultRow.AppDefId + ')" class="btn  btn-sm btn-outline-danger" title="Sil"> Sil</button> ';
-                    content += '<button onclick="LoadUpdateAppPartial(' + JsonResultRow.AppDefId + ')" data-toggle="modal" data-target="#addApp" class="btn  btn-sm btn-outline-info" title="Güncelle"> Güncelle</button> ';
+                    var content = '<button onclick="DeleteApp(' + JsonResultRow.AppDefId + ')" class="btn  btn-sm btn-outline-danger" title="Sil"><i class="fa fa-trash"></i> Sil</button> ';
+                    content += '<button onclick="LoadUpdateAppPartial(' + JsonResultRow.AppDefId + ')" data-toggle="modal" data-target="#addApp" class="btn  btn-sm btn-outline-info" title="Güncelle"><i class="fa fa-edit"></i> Güncelle</button> ';
                     return content;
                 }
             },
@@ -192,9 +192,9 @@ function InitializeDataTable() {
                     var duration = current.diff(updateTime, 'seconds')
                     var result = '';
                     if (duration < 60)
-                        result = "<span class='text-success'> <i class='fa fa-check'></i> " + "ON </span>"
+                        result = "<span class='text-success'> <i class='fa fa-check'></i> " + "UP </span>"
                     else
-                        result = "<span class='text-danger'> <i class='fa fa-circle'></i> " + "OFF </span>"
+                        result = "<span class='text-danger'> <i class='fa fa-circle'></i> " + "DOWN </span>"
 
                     return result;
                 }
