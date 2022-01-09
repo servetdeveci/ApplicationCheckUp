@@ -2,7 +2,7 @@
 
 namespace ApplicationHealth.Domain.EntityInterfaces
 {
-    public interface IAppNotificationRepository : IAppRepository<AppContact>
+    public interface IAppNotificationRepository : IAppRepository<AppNotification>
     {
     }
 }

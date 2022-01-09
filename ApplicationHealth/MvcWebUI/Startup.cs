@@ -25,24 +25,13 @@ namespace ApplicationHealth.MvcWebUI
         public void ConfigureServices(IServiceCollection services)
         {
             #region DB ve Entity Registration
-            string connectionString = @"Host=database;Port=5432;Database=AppHealtDb;Username=postgres;Password=pass";
-
-            services.AddDatabase(connectionString);
-            services.AddRepositories();
-            services.AddEntityServices();
+            services.AddDatabase(Configuration).AddRepositories().AddEntityServices();
             #endregion
-
-            services.AddControllersWithViews().AddNewtonsoftJson(options =>
-            {
-                options.UseMemberCasing();
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            });
 
             #region IdentityConnectionAndOptions
 
-
             services.AddDbContext<CustomIdentityDbContext>
-                (options => options.UseNpgsql(connectionString));
+                (options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<CustomIdentityUser, CustomIdentityRole>()
                 .AddEntityFrameworkStores<CustomIdentityDbContext>()
@@ -77,6 +66,14 @@ namespace ApplicationHealth.MvcWebUI
 
             services.AddSession();
             #endregion
+
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+            {
+                options.UseMemberCasing();
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+
+
 
         }
 

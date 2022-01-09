@@ -4,7 +4,6 @@ using ApplicationHealth.Domain.Entities;
 using ApplicationHealth.Domain.ViewModels;
 using System;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace ApplicationHealth.Services.Services
 {

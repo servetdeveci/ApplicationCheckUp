@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
     <ProjectReference Include="..\Domain\ApplicationHealth.Domain.csproj" />
+    <ProjectReference Include="..\Services\ApplicationHealth.Services.csproj" />
   </ItemGroup>
 
 </Project>

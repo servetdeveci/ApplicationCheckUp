@@ -1,0 +1,121 @@
+﻿
+table.dataTable tbody td {
+    font-size: 1em;
+    font-weight: 700;
+    color: #616161 !important;
+}
+
+.dataTablesIslemler {
+    min-width: 150px !important;
+}
+
+.btn-collection {
+    padding: 5px 15px;
+    background: #ffffff !important;
+    color: #6c757d !important;
+}
+
+    .btn-collection:hover {
+        padding: 5px 15px;
+        background: #6c757d !important;
+        color: #ffffff !important;
+    }
+
+a.buttons-collection {
+    margin-left: 1em;
+}
+
+.paginate_input {
+    width: 50px;
+}
+
+
+
+.dt-buttons {
+    float: right;
+}
+
+table.dataTable > tbody > tr.child span.dtr-title {
+    font-weight: 900;
+    font-size: 11px;
+}
+
+table.dataTable > tbody > tr.child span.dtr-data {
+    font-weight: 400;
+    font-size: 10px;
+}
+
+
+table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child:before {
+    top: 9px !important;
+    left: 1px !important;
+    height: 21px !important;
+    width: 21px !important;
+    line-height: 22px !important;
+    font-size: 17px !important;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details {
+    width: 100%;
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 568px) {
+}
+
+@media (max-width: 767px) {
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0;
+        margin-top: 10px;
+    }
+}
+
+@media only screen and (min-width : 768px) {
+
+    div.dt-buttons {
+        top: 7px;
+        float: right;
+    }
+
+    div.dataTables_filter {
+        margin-top: 23px;
+        float: right;
+        padding-right: 10px;
+    }
+
+    div.dataTables_length {
+        margin-top: 23px;
+        float: right;
+        padding-right: 10px;
+    }
+
+    div.dataTables_wrapper {
+        margin-top: -50px !important;
+    }
+
+    .dt-buttons {
+        float: right;
+    }
+
+    table.dataTable > tbody > tr.child ul.dtr-details > li {
+        width: 50%;
+        display: inline-block;
+        background-color: #e6eaef;
+    }
+
+    .table td, .table th {
+        padding: .50rem;
+    }
+
+    table.dataTable > tbody > tr.child ul.dtr-details > li:first-child {
+        padding-top: 6px;
+    }
+}
+
+@media only screen and (min-width : 992px) {
+
+    table.dataTable > tbody > tr.child ul.dtr-details > li {
+        width: 25%;
+        display: inline-block;
+        background-color: #e6eaef;
+    }
+}

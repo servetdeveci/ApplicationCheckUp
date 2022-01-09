@@ -1,5 +1,8 @@
 ﻿using ApplicationHealth.Domain;
+using ApplicationHealth.Domain.EntityInterfaces;
 using ApplicationHealth.Infrastructure.Context;
+using ApplicationHealth.Services.Managers;
+using ApplicationHealth.Services.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,15 +47,18 @@ namespace ApplicationHealth.Infrastructure.Extensions
         {
             services.AddScoped(typeof(IAppRepository<>), typeof(AppRepository<>));
 
-            //services.AddScoped<IPowerPlantDefRepository, PowerPlantDefRepository>();
-            //services.AddScoped<IPowerPlantHourlyDatumRepository, PowerPlantHaurlyDatumReposiytory>();
+            services.AddScoped<IAppDefRepository, AppDefRepository>();
+            services.AddScoped<IAppNotificationRepository, AppNotificationRepository>();
+            services.AddScoped<IAppContactRepository, AppContactRepository>();
 
             return services;
         }
         public static IServiceCollection AddEntityServices(this IServiceCollection services)
         {
-            //services.AddScoped<IPowerPlantDefService, PowerPlantDefManager>();
-            //services.AddScoped<IPowerPlantDatumService, PowerPlantDatumManager>();
+            services.AddScoped<IAppDefService, AppDefManager>();
+            services.AddScoped<IAppNotificationService, AppNotificationManager>();
+            services.AddScoped<IAppContactService, AppContactManager>();
+
             return services;
         }
     }

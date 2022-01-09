@@ -6,8 +6,9 @@ using ApplicationHealth.Domain.EntityInterfaces;
 using ApplicationHealth.Domain.ViewModels;
 using ApplicationHealth.Services.Services;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
-
+using System.Linq.Dynamic.Core;
 namespace ApplicationHealth.Services.Managers
 {
     public class AppDefManager : IAppDefService
@@ -27,7 +28,7 @@ namespace ApplicationHealth.Services.Managers
             {
                 _appDefRepository.Add(app);
                 _unitOfWork.CommitAsync();
-                if (_unitOfWork.Commit()>0)
+                if (_unitOfWork.Commit() > 0)
                 {
                     return new WebUIToast
                     {
@@ -45,7 +46,7 @@ namespace ApplicationHealth.Services.Managers
                         message = "Veritabanına kayıt yapılamadı"
                     };
                 }
-               
+
             }
             catch (Exception)
             {
@@ -97,7 +98,25 @@ namespace ApplicationHealth.Services.Managers
 
         public AppDefDataTable GetAppDefDataTable(BaseFilterParameters filters)
         {
-            throw new NotImplementedException();
+
+            IQueryable<AppDef> filteredData;
+            Expression<Func<AppDef, bool>> expression = d => (string.IsNullOrEmpty(filters.mainFilter) || d.Name.ToLower().Contains(filters.mainFilter.ToLower()));
+            var totalCount = _appDefRepository.CountAll();
+            filteredData = _appDefRepository.Table.Where(expression);
+            var filteredCount = filteredData.Count();
+
+            var newModel = filteredData.OrderBy(filters.sortColumnName + " " + filters.sortColumnDirection)
+                .Skip(filters.start).Take(filters.length).ToList();
+
+            var model = new AppDefDataTable
+            {
+                data = newModel,
+                draw = filters.draw,
+                recordsFiltered = filteredCount,
+                recordsTotal = totalCount
+            };
+
+            return model;
         }
 
         public AppDef GetByFilter(Expression<Func<AppDef, bool>> predicate)

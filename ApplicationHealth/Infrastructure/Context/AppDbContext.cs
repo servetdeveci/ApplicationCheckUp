@@ -20,11 +20,21 @@ namespace ApplicationHealth.Infrastructure.Context
 
             modelBuilder.Entity<AppDef>()
                          .HasKey(k => k.AppDefId);
+            modelBuilder.Entity<AppDef>()
+               .Property(p => p.AppDefId)
+               .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<AppNotification>()
                          .HasKey(k => k.AppNotificationId);
+            modelBuilder.Entity<AppNotification>()
+               .Property(p => p.AppNotificationId)
+               .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<AppContact>()
                          .HasKey(k => k.AppNotificationContactId);
-
+            modelBuilder.Entity<AppContact>()
+              .Property(p => p.AppNotificationContactId)
+              .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<AppDef>().Property(b => b.Name).HasMaxLength(50);
 
