@@ -8,7 +8,7 @@ namespace ApplicationHealth.Domain.Entities
     public class AppContact : EntityBase
     {
         public int AppNotificationContactId { get; set; }
-        public uint AppDefId { get; set; }
+        public int AppDefId { get; set; }
         [DataType(DataType.EmailAddress)]
         [Display(Name = "E-Posta Adresi")]
         [StringLength(100)]

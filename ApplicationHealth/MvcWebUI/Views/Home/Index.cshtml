@@ -3,57 +3,49 @@
 }
 
 <link href="/lib/DataTables/datatables.min.css" rel="stylesheet" />
-<link href="/lib/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />
 
-<div class="container">
-    <div class="col-12 text-right">
-        <button onclick="InsertApp()" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#crudModal">Yeni Uygulama</button>
+
+<div class="card mb-3  text-right">
+    <div class="card-body">
+        <button onclick="LoadInsertAppPartial()" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#addApp">Yeni Uygulama</button>
     </div>
 </div>
 
 
-<div class="container">
-    <div class="col-12">
-        <table class="table" width="100%" id="AppTable">
-            <thead>
-                <tr class="bg-secondary text-white">
-                    <th class="all">Actions</th>
-                    <th class="all">Application</th>
-                    <th class="all">Url</th>
-                    <th class="all">Interval</th>
-                    <th class="all">CreatedBy</th>
-                    <th class="all">CreatedDate</th>
-                    <th class="all">UpdatedDate</th>
-                </tr>
-            </thead>
-        </table>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table" width="100%" id="AppTable">
+                <thead>
+                    <tr class="bg-secondary text-white">
+                        <th class="all">Actions</th>
+                        <th class="all">Application</th>
+                        <th class="all">Url</th>
+                        <th class="all">Interval</th>
+                        <th class="all">CreatedBy</th>
+                        <th class="all">CreatedDate</th>
+                        <th class="all">UpdatedDate</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
-</div>
+    
+
 <!-- Modal -->
-<div class="modal fade" id="crudModal" tabindex="-1" role="dialog" aria-labelledby="crudModalLabel" aria-hidden="true">
+<div class="modal fade" id="addApp" tabindex="-1" role="dialog" aria-labelledby="crudModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add/Update App</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+        <div class="modal-content" id="dynamicContent">
+            
         </div>
     </div>
 </div>
 
 
 
+
+
 @section Scripts{
-    <script src="/lib/bootstrap-sweetalert/sweetalert.min.js"></script>
     <script src="/lib/DataTables/datatables.min.js"></script>
     <script src="~/js/home/home.js" asp-append-version="true"></script>
 }

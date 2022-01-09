@@ -1,5 +1,6 @@
 ﻿using ApplicationHealth.Domain.DataTable;
 using ApplicationHealth.Domain.DataTable.Base;
+using ApplicationHealth.Domain.Entities;
 using ApplicationHealth.MvcWebUI.Models;
 using ApplicationHealth.Services.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,25 @@ namespace ApplicationHealth.MvcWebUI.Controllers
         {
             _logger.Log(LogLevel.Trace, "uygulama başladı");
             return View();
+        }
+        public IActionResult _InsertApp()
+        {
+            return PartialView("_InsertApp");
+        }
+        [HttpPost]
+        public JsonResult InsertApp(AppDef app)
+        {
+            return new JsonResult(_appService.Add(app));
+        } 
+        [HttpPost]
+        public JsonResult DeleteApp(int id)
+        {
+            return new JsonResult(_appService.Delete(id));
+        }
+        public IActionResult _UpdateApp(int id)
+        {
+            var model = _appService.GetById(id);
+            return PartialView("_UpdateApp", model);
         }
 
         [HttpPost]

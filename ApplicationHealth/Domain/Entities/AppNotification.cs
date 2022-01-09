@@ -8,7 +8,7 @@ namespace ApplicationHealth.Domain.Entities
     {
         public int AppNotificationId { get; set; }
         public int AppNotificationContactId { get; set; }
-        public uint AppDefId { get; set; }
+        public int AppDefId { get; set; }
         [StringLength(250)]
         public string Message { get; set; }
         public bool IsRead { get; set; }

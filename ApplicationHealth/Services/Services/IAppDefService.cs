@@ -11,7 +11,7 @@ namespace ApplicationHealth.Services.Services
     {
        
         WebUIToast Add(AppDef app);
-        WebUIToast Update(string name, string url, ushort interval);
+        WebUIToast Update(string name, string url, short interval);
         AppDef GetByFilter(Expression<Func<AppDef, bool>> predicate);
         AppDef GetById(int id);
         WebUIToast Delete(int id);

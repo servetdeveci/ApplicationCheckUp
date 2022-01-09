@@ -3,11 +3,10 @@
 var lengthArray = [[5, 10, 15, 20, 25, 50, 75, 100, 250, 500, 1000], [5, 10, 15, 20, 25, 50, 75, 100, 250, 500, 1000]];
 
 // bir çok yerde kullanılıyor. ('data-url' olan herhangi bir elemente tıklandığında asenkron olarak sayfayı 'istenilenYere' yükler)
-function LoadPage(url, loadAreaSelector, ajax, pageTitle = "Atlas Sayaç", changeUrl = false, _async = true, type = "GET") {
+function LoadPage(url, loadAreaSelector, ajax, pageTitle = "Sayfa", changeUrl = false, _async = true, type = "GET") {
+
     var content = $(loadAreaSelector);
     content.html("");
-    //content.append("<div class='col-sm-12'><img class='loaderImg img-responsive' src='/img/loading-layout.png' /></div>");
-
     content.append(loadingHtml);
     $.ajax({
         type: type,
@@ -15,17 +14,7 @@ function LoadPage(url, loadAreaSelector, ajax, pageTitle = "Atlas Sayaç", chang
         url: url,
         data: { "ajax": ajax },
         success: function (res) {
-            //console.log(res);
             content.html(res);
-            //content.show();
-            //console.log("Yüklenen --> " + url);
-            if (window.outerWidth < 993) {
-                $(".inbox-sidebar").addClass("hidden-xs hidden-sm");
-            }
-            if (changeUrl) {
-                document.title = pageTitle;
-                window.history.pushState({ "url": url, "pageTitle": pageTitle }, "", url);
-            }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $.toast({

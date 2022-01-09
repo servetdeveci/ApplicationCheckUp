@@ -27,7 +27,6 @@ namespace ApplicationHealth.Services.Managers
             try
             {
                 _appDefRepository.Add(app);
-                _unitOfWork.CommitAsync();
                 if (_unitOfWork.Commit() > 0)
                 {
                     return new WebUIToast
@@ -48,7 +47,7 @@ namespace ApplicationHealth.Services.Managers
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new WebUIToast
                 {
@@ -91,7 +90,7 @@ namespace ApplicationHealth.Services.Managers
                 {
                     header = "Başarısız",
                     icon = "error",
-                    message = "Eklenirken bir istisna oluştu"
+                    message = "Silinirken bir istisna oluştu"
                 };
             }
         }
@@ -126,10 +125,10 @@ namespace ApplicationHealth.Services.Managers
 
         public AppDef GetById(int id)
         {
-            throw new NotImplementedException();
+            return _appDefRepository.GetById(id);
         }
 
-        public WebUIToast Update(string name, string url, ushort interval)
+        public WebUIToast Update(string name, string url, short interval)
         {
             throw new NotImplementedException();
         }
