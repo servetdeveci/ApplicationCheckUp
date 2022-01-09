@@ -1,9 +1,8 @@
+using ApplicationHealth.Infrastructure.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace ApplicationHealth.WorkerService
 {
@@ -18,7 +17,14 @@ namespace ApplicationHealth.WorkerService
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    var cs = @"Host=localhost;Database=AppHealth;Username=postgres;Password=pass";
+                    services.AddDatabase(cs).AddRepositories().AddEntityServices();
                     services.AddHostedService<Worker>();
-                });
+
+                }).ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(LogLevel.Trace);
+                }).UseNLog();  // NLog: setup NLog for Dependency injection;;
     }
 }

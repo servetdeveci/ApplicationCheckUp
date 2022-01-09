@@ -10,6 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace ApplicationHealth.Services.Managers
 {
@@ -173,6 +174,36 @@ namespace ApplicationHealth.Services.Managers
             }
 
 
+        }
+        public List<AppDef> GetAll(Expression<Func<AppDef, bool>> predicate = null)
+        {
+            try
+            {
+                return _appDefRepository.GetAll(predicate);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.GET} ==> GetAll predicate: {predicate.ToString()} Ex: {ex.Message}");
+                return null;
+            }
+        }
+        public bool UpdateAppStatus(int id, DateTime now, bool isUp)
+        {
+            try
+            {
+                var existing = GetById(id);
+                existing.LastControlDateTime = now;
+                existing.IsUp = isUp;
+                _appDefRepository.Update(existing);
+                _unitOfWork.Commit();
+                _logger.LogTrace($"{CrudTwinProperty.UPDATE} ==> AppDefId: {id} güncellendi");
+                return true;
+            }
+            catch (Exception)
+            {
+                _logger.LogError($"{CrudTwinProperty.UPDATE} ==> AppDefId: {id} güncellenirken hata oluştu");
+                return false;
+            }
         }
     }
 }

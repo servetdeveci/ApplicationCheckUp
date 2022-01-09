@@ -58,6 +58,7 @@ namespace ApplicationHealth.Infrastructure.Extensions
             services.AddScoped<IAppDefService, AppDefManager>();
             services.AddScoped<IAppNotificationService, AppNotificationManager>();
             services.AddScoped<IAppContactService, AppContactManager>();
+            services.AddScoped<IMailService, MailManager>();
 
             return services;
         }

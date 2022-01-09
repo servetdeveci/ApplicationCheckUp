@@ -163,7 +163,6 @@ function InitializeDataTable() {
                 d.mainFilter = $("#AppTable_filter > label > input").val();
             }
         },
-        autoWidth: true,
         language: { url: "/lib/DataTables/Turkish.json" },
         drawCallback: function (settings) {
             var res = settings.json;
@@ -183,11 +182,18 @@ function InitializeDataTable() {
                 "data": "Name",
                 "orderable": false,
                 "render": function (data, type, JsonResultRow, meta) {
-                    var content = '<a href="/home/detail/' + JsonResultRow.AppDefId +'" class="btn  btn-sm btn-outline-secondary w-100" title="Detay">'+ data + '</button> ';
+                    var content = '<a href="/home/detail/' + JsonResultRow.AppDefId + '" class="btn  btn-sm btn-outline-secondary w-100" title="Detay">' + data + '</button> ';
                     return content;
                 }
             },
-            { data: "Url" },
+            {
+                "data": "Url",
+                "orderable": false,
+                "render": function (data, type, JsonResultRow, meta) {
+                    var content = '<a target="_blank" href="' + data + '" class="btn  btn-sm btn-outline-secondary w-100 mw-200" title="Yeni sekmede aç --- ' + data + '">' + data + '</button> ';
+                    return content;
+                }
+            },
             { data: "Interval" },
             { data: "CreatedBy" },
             {
@@ -199,16 +205,16 @@ function InitializeDataTable() {
             {
                 "data": "LastControlDateTime",
                 "render": function (data, type, JsonResultRow, meta) {
-                    var updateTime = moment(data);
-                    var current = moment().add(2, 'seconds');
-                    var duration = current.diff(updateTime, 'seconds')
-                    var result = '';
-                    if (duration < 60)
-                        result = "<span class='text-success'> <i class='fa fa-check'></i> " + "UP </span>"
+                    return SetWithServerDateTime(systemDateTime, data);
+                }
+            },
+            {
+                "data": "IsUp",
+                "render": function (data, type, JsonResultRow, meta) {
+                    if (data == true)
+                        return "<span class='text-success'> <i class='fa fa-check'></i> " + "UP </span>"
                     else
-                        result = "<span class='text-danger'> <i class='fa fa-circle'></i> " + "DOWN </span>"
-
-                    return result;
+                        return "<span class='text-danger'> <i class='fa fa-circle'></i> " + "DOWN </span>"
                 }
             },
         ],
