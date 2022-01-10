@@ -24,8 +24,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerFiles", "DockerFiles", "{608B1C2D-9DEA-4C65-8D0E-6AB23F5D05D6}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
-		Dockerfile-gs = Dockerfile-gs
-		Dockerfile-test = Dockerfile-test
+		Dockerfile-app = Dockerfile-app
 		Dockerfile-ws = Dockerfile-ws
 	EndProjectSection
 EndProject
