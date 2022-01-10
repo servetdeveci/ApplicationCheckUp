@@ -16,11 +16,13 @@ namespace ApplicationHealth.MvcWebUI.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IAppContactService _appContactService;
+        private readonly IAppNotificationService _notificationService;
 
-        public NotificationController(ILogger<HomeController> logger, IAppContactService appContactService)
+        public NotificationController(ILogger<HomeController> logger, IAppContactService appContactService, IAppNotificationService notificationService)
         {
             _logger = logger;
             _appContactService = appContactService;
+            _notificationService = notificationService;
         }
 
         public IActionResult Index()
@@ -38,6 +40,13 @@ namespace ApplicationHealth.MvcWebUI.Controllers
         {
             return new JsonResult(_appContactService.Add(contact));
         }
+
+        [HttpPost]
+        public AppNotificationDataTable GetAppDefDataTable(BaseFilterParameters filters)
+        {
+            return _notificationService.GetNotificationDataTable(LoadDataTableSortParameters(filters));
+        }
+
 
     }
 }

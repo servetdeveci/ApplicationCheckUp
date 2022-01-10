@@ -1,4 +1,6 @@
-﻿using ApplicationHealth.Domain.Entities;
+﻿using ApplicationHealth.Domain.DataTable;
+using ApplicationHealth.Domain.DataTable.Base;
+using ApplicationHealth.Domain.Entities;
 using ApplicationHealth.Domain.ViewModels;
 using System;
 using System.Linq.Expressions;
@@ -13,5 +15,8 @@ namespace ApplicationHealth.Services.Services
         AppNotification GetById(int id);
         WebUIToast Delete(int id);
         Task SendNotification(AppDef app);
+        AppNotificationDataTable GetNotificationDataTable(BaseFilterParameters filters);
+
+        
     }
 }

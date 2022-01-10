@@ -1,28 +1,67 @@
 ﻿@{
-    ViewData["Title"] = "Anasayfa";
+    ViewData["Title"] = "Home Page";
 }
 
+<link href="/lib/DataTables/datatables.min.css" rel="stylesheet" />
+<link href="/css/custom-dataTable.css" rel="stylesheet" />
 
-<div class="card mb-3  text-center">
+<div class="card mb-3  text-right">
     <div class="card-body">
         <div class="row">
             <div class="col-12 col-sm-6 text-left">
-                <h3> <i class="fa fa-cubes"></i> Bildirimler</h3>
+                <h3> <i class="fa fa-cubes"></i> Uygulamalar</h3>
 
             </div>
             <div class="col-12 col-sm-6 text-right">
-                <button onclick="window.history.go(-1); return false;"  class="btn btn-sm btn-outline-info">
-                    <i class="fa fa-arraw-left"></i> Geri
+                <button onclick="LoadInsertAppPartial()" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#crudModal">
+                    <i class="fa fa-plus"></i>
+                    Yeni Uygulama
                 </button>
             </div>
         </div>
     </div>
 </div>
 
+
+
 <div class="card">
-    <div class="card-body  text-center">
-        <a href="/Application/Index" class="btn btn-sm btn-outline-info"><i class="fa fa-cubes"></i> Uygulamalar
-        </a>
+    <div class="card-body">
+        <table class="table" width="100%" id="AppNotiTable">
+            <thead>
+                <tr class="bg-secondary text-white">
+                    <th class="all">#</th>
+                    <th class="all">Actions</th>
+                    <th class="all">Application</th>
+                    <th class="all">Url</th>
+                    <th class="all">Interval</th>
+                    <th class="none">CreatedBy</th>
+                    <th class="none">CreatedDate</th>
+                    <th class="none">UpdatedBy</th>
+                    <th class="none">UpdatedDate</th>
+                    <th class="desktop">Last Check-Up</th>
+                    <th class="all">Up/Down</th>
+
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="crudModal" tabindex="-1" role="dialog" aria-labelledby="crudModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="dynamicContent">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts{
+    <script src="/lib/DataTables/datatables.min.js"></script>
+    <script src="/js/app/app.js" asp-append-version="true"></script>
+}

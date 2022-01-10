@@ -102,6 +102,28 @@ namespace ApplicationHealth.Services.Managers
             }
         }
 
+        public AppNotificationDataTable GetNotificationDataTable(BaseFilterParameters filters)
+        {
+            IQueryable<AppNotification> filteredData;
+            Expression<Func<AppNotification, bool>> expression = d => (string.IsNullOrEmpty(filters.mainFilter) || d.Message.ToLower().Contains(filters.mainFilter.ToLower()));
+            var totalCount = _appNotificationRepository.CountAll();
+            filteredData = _appNotificationRepository.Table.Where(expression);
+            var filteredCount = filteredData.Count();
+
+            var newModel = filteredData.OrderBy(filters.sortColumnName + " " + filters.sortColumnDirection)
+                .Skip(filters.start).Take(filters.length).ToList();
+
+            var model = new AppNotificationDataTable
+            {
+                data = newModel,
+                draw = filters.draw,
+                recordsFiltered = filteredCount,
+                recordsTotal = totalCount
+            };
+
+            return model;
+        }
+
         public AppNotification GetByFilter(Expression<Func<AppNotification, bool>> predicate)
         {
             return _appNotificationRepository.Get(predicate);
