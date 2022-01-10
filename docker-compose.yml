@@ -15,27 +15,32 @@ services:
     app:
         container_name: 'app-health-app'
         image: 'app-health-app'
+        volumes:
+           - "/etc/timezone:/etc/timezone:ro"
+           - "/etc/localtime:/etc/localtime:ro"
         build:
             context: .
             dockerfile: Dockerfile-app
         depends_on:
-            - 'database'
+           - 'database'
         ports:
-          - '5000:5000'
+           - '5000:5000'
         networks:
-            - app-health-network 
-
+           - app-health-network 
+        
     workerservice:
         container_name: 'health-check-ws'
         image: 'health-check-ws'
+        volumes:
+           - "/etc/timezone:/etc/timezone:ro"
+           - "/etc/localtime:/etc/localtime:ro"
         build:
           context: .
           dockerfile: Dockerfile-ws
         depends_on:
-          - 'database'
+           - 'database'
         networks:
-          - app-health-network  
-  
+           - app-health-network    
 networks:
   app-health-network:
     driver: bridge
