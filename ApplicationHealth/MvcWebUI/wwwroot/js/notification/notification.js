@@ -11,7 +11,7 @@ function InitializeDataTable() {
         serverSide: true,
         processing: false,
         responsive: true,
-        order: [[7, 'desc']],
+        order: [[4, 'desc']],
         lengthMenu: lengthArray,
         pageLength: 10,
         scrollX: true,
@@ -37,10 +37,10 @@ function InitializeDataTable() {
             },
            
             {
-                "data": "AppDefId",
+                "data": "AppDef.Name",
                 "orderable": false,
                 "render": function (data, type, JsonResultRow, meta) {
-                    var content = '<a href="/Application/detail/' + JsonResultRow.AppDefId + '" class="btn  btn-sm btn-outline-secondary w-100" title="Detay">' + data + '</button> ';
+                    var content = '<a href="/Application/detail/' + JsonResultRow.AppDef.AppDefId + '" class="btn  btn-sm btn-outline-secondary w-100" title="Detay">' + data + '</button> ';
                     return content;
                 }
             },

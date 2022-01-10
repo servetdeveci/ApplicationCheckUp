@@ -12,6 +12,7 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using ApplicationHealth.Domain.Enums;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationHealth.Services.Managers
 {
@@ -21,7 +22,6 @@ namespace ApplicationHealth.Services.Managers
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IMailService _mailService;
         private readonly IAppContactService _appContactService;
-
         public AppNotificationManager(IAppNotificationRepository appNotificationRepository, IAppUnitOfWork unitOfWork, IMailService mailService, IAppContactService appContactService)
         {
             _appNotificationRepository = appNotificationRepository;
@@ -65,7 +65,6 @@ namespace ApplicationHealth.Services.Managers
                 };
             }
         }
-
         public WebUIToast Delete(int id)
         {
             try
@@ -101,13 +100,12 @@ namespace ApplicationHealth.Services.Managers
                 };
             }
         }
-
         public AppNotificationDataTable GetNotificationDataTable(BaseFilterParameters filters)
         {
             IQueryable<AppNotification> filteredData;
             Expression<Func<AppNotification, bool>> expression = d => (string.IsNullOrEmpty(filters.mainFilter) || d.Message.ToLower().Contains(filters.mainFilter.ToLower()));
             var totalCount = _appNotificationRepository.CountAll();
-            filteredData = _appNotificationRepository.Table.Where(expression);
+            filteredData = _appNotificationRepository.Table.Where(expression).Include(d => d.AppDef).Include(m => m.Contact);
             var filteredCount = filteredData.Count();
 
             var newModel = filteredData.OrderBy(filters.sortColumnName + " " + filters.sortColumnDirection)
@@ -123,17 +121,14 @@ namespace ApplicationHealth.Services.Managers
 
             return model;
         }
-
         public AppNotification GetByFilter(Expression<Func<AppNotification, bool>> predicate)
         {
             return _appNotificationRepository.Get(predicate);
         }
-
         public AppNotification GetById(int id)
         {
             return _appNotificationRepository.GetById(id);
         }
-
         public async Task SendNotification(AppDef app)
         {
             var interval = (int)(DateTime.Now - app.LastNotificationDateTime).TotalMinutes;
@@ -160,10 +155,18 @@ namespace ApplicationHealth.Services.Managers
             }
 
         }
-        private async Task GenerateEmailAndSend(AppDef app, AppContact item)
+        private async Task GenerateEmailAndSend(AppDef app, AppContact cont)
         {
-            var email = new Email { toList = item.Email, subject = "App Check Up", content = $"{app.Name} ({app.Url})  is down.  Last control-time {app.LastControlDateTime.ToShortTimeString()}" };
+            var email = new Email { toList = cont.Email, subject = "App Check Up", content = $"{app.Name} ({app.Url})  is down.  Last control-time {app.LastControlDateTime.ToShortTimeString()}" };
             await _mailService.SendMailViaSystemNetAsync(email);
+            var noti = new AppNotification
+            {
+                AppDefId = app.AppDefId,
+                AppNotificationContactId = cont.AppNotificationContactId,
+                Message = email.content,
+                SentDateTime = DateTime.Now,
+            };
+            Add(noti);
         }
         private List<AppContact> GetAppNotificationContact(int id)
         {

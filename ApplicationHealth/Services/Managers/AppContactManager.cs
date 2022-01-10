@@ -1,14 +1,10 @@
 ﻿using ApplicationHealth.Domain;
-using ApplicationHealth.Domain.DataTable;
-using ApplicationHealth.Domain.DataTable.Base;
 using ApplicationHealth.Domain.Entities;
 using ApplicationHealth.Domain.EntityInterfaces;
 using ApplicationHealth.Domain.ViewModels;
 using ApplicationHealth.Services.Services;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Linq.Dynamic.Core;
 using System.Collections.Generic;
 
 namespace ApplicationHealth.Services.Managers
@@ -17,13 +13,11 @@ namespace ApplicationHealth.Services.Managers
     {
         private readonly IAppContactRepository _appContactRepository;
         private readonly IAppUnitOfWork _unitOfWork;
-
         public AppContactManager(IAppContactRepository AppContactRepository, IAppUnitOfWork unitOfWork)
         {
             _appContactRepository = AppContactRepository;
             _unitOfWork = unitOfWork;
         }
-
         public WebUIToast Add(AppContact app)
         {
             try
@@ -59,7 +53,6 @@ namespace ApplicationHealth.Services.Managers
                 };
             }
         }
-
         public WebUIToast Delete(int id)
         {
             try
@@ -95,18 +88,15 @@ namespace ApplicationHealth.Services.Managers
                 };
             }
         }
-
         public List<AppContact> GetAll(Expression<Func<AppContact, bool>> predicate = null)
         {
             return _appContactRepository.GetAll(predicate);
         }
-
         public AppContact GetByFilter(Expression<Func<AppContact, bool>> predicate)
         {
             return _appContactRepository.Get(predicate);
 
         }
-
         public AppContact GetById(int id)
         {
             return _appContactRepository.GetById(id);

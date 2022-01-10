@@ -42,7 +42,7 @@ namespace ApplicationHealth.MvcWebUI.Controllers
         }
 
         [HttpPost]
-        public AppNotificationDataTable GetAppDefDataTable(BaseFilterParameters filters)
+        public AppNotificationDataTable GetNotificationDataTable(BaseFilterParameters filters)
         {
             return _notificationService.GetNotificationDataTable(LoadDataTableSortParameters(filters));
         }

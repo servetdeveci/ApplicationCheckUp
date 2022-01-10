@@ -223,7 +223,6 @@ namespace ApplicationHealth.Services.Managers
                     if (!response.IsSuccessStatusCode)
                         await _appNotificationService.SendNotification(app);
                     var res = UpdateAppStatus(app.AppDefId, DateTime.Now, response.IsSuccessStatusCode);
-                    Console.WriteLine($"Name: {app.Name} Response: {response.StatusCode}");
                     _httpClient.Dispose();
                 }
 
@@ -233,7 +232,6 @@ namespace ApplicationHealth.Services.Managers
                 var res = UpdateAppStatus(app.AppDefId, DateTime.Now, false);
                 await _appNotificationService.SendNotification(app);
                 Console.WriteLine($"Name: {app.Name} Response: {ex.Message}");
-                _logger.LogError($"WorkerService ==> AppDefId: {app.AppDefId} güncellenirken hata oluştu");
             }
         }
         public async Task<WebUIToast> CheckAppIsUp(int id)
