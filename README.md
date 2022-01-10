@@ -29,7 +29,8 @@ Docker Desktop uygulası kurularak docker-compose.yml dosyası ile tüm proje ç
 Mevcut veritabanı sunucusuna DbContext migrate edilerek ve ConnectionString de gerekli değişiklikler yapılarak Visual Studio üzerinden çoklu proje çalıştırma seçeneği ile proje çalıştırılabilir.
 
 ```diff
-- Dikkat! Docker veya Visual studio ile çalıştırışırlem connectionString'lere dikkat edilmelidir.
+- Dikkat! Docker veya Visual studio ile çalıştırışırken connectionString'lere dikkat edilmelidir.
++ docker için 'database' diğer host'lar için ip veya domain adı girilmelidir
 ```
 
 ### Uygulama genel mantığını anlatan  ekran görüntüleri 
