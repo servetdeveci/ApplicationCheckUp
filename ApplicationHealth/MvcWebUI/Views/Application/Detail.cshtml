@@ -95,7 +95,7 @@
                         @foreach (var item in Model.Notifications)
                         {
                             <tr class="">
-                                
+
                                 <td>@item.Message</td>
                                 <td>@item.Contact.NotificationContactName </td>
                                 <td>@item.Contact.NotificationType.ToString()</td>
@@ -113,14 +113,5 @@
 
 @section Scripts{
     <script src="/lib/DataTables/datatables.min.js"></script>
-    <script>
-        $('#appContact').DataTable({
-            order: [[3, 'desc']],
-            language: { url: "/lib/DataTables/Turkish.json" },
-        });
-        $('#appNotiTable').DataTable({
-            order: [[3, 'desc']],
-            language: { url: "/lib/DataTables/Turkish.json" },
-        });
-    </script>
+    <script src="~/js/app/app-detail.js" asp-append-version="true"></script>
 }

@@ -46,7 +46,10 @@ namespace ApplicationHealth.MvcWebUI.Controllers
         {
             return _notificationService.GetNotificationDataTable(LoadDataTableSortParameters(filters));
         }
-
-
+        [HttpPost]
+        public JsonResult DeleteContact(int id)
+        {
+            return new JsonResult(_appContactService.Delete(id));
+        }
     }
 }

@@ -182,6 +182,7 @@ namespace ApplicationHealth.Services.Managers
                             case NotificationType.Sms:
                                 break;
                             case NotificationType.EmailSms:
+                                await GenerateEmailAndSend(app, cont);
                                 break;
                             default:
                                 break;
