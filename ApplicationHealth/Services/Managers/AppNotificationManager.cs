@@ -140,7 +140,7 @@ namespace ApplicationHealth.Services.Managers
         }
         private async Task GenerateEmailAndSend(AppDef app, AppContact item)
         {
-            var email = new Email { toList = item.Email, subject = "App Check Up", content = app.Name + "is down. Last control-time " + app.LastControlDateTime.ToShortTimeString() };
+            var email = new Email { toList = item.Email, subject = "App Check Up", content = $"{app.Name} ({app.Url})  is down.  Last control-time {app.LastControlDateTime.ToShortTimeString()}" };
             await _mailService.SendMailViaSystemNetAsync(email);
         }
         private List<AppContact> GetAppNotificationContact(int id)
