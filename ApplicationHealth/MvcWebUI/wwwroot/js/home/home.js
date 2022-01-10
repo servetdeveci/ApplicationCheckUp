@@ -172,7 +172,7 @@ function InitializeDataTable() {
         serverSide: true,
         processing: false,
         responsive: true,
-        order: [[5, 'desc']],
+        order: [[7, 'desc']],
         lengthMenu: lengthArray,
         pageLength: 10,
         scrollX: true,
@@ -192,11 +192,17 @@ function InitializeDataTable() {
         columns: [
             {
                 "data": "AppDefId",
+                "render": function (data, type, JsonResultRow, meta) {
+                    return "";
+                }
+            },
+            {
+                "data": "AppDefId",
                 "orderable": false,
                 "render": function (data, type, JsonResultRow, meta) {
                     var content = '<button onclick="DeleteApp(' + JsonResultRow.AppDefId + ')" class="btn  btn-sm btn-outline-danger" title="Bu uygulamayı sil"><i class="fa fa-trash"></i></button> ';
                     content += '<button onclick="LoadUpdateAppPartial(' + JsonResultRow.AppDefId + ')" data-toggle="modal" data-target="#crudModal" class="btn  btn-sm btn-outline-info" title="Kayıt ayarlarını güncelle"><i class="fa fa-edit"></i></button> ';
-                    content += '<button onclick="CheckAppIsUp(' + JsonResultRow.AppDefId + ')" class="btn  btn-sm btn-outline-success" title="Uygulama manuel olarak check et"><i class="fa fa-arrow-up"></i></button> ';
+                    content += '<button onclick="CheckAppIsUp(' + JsonResultRow.AppDefId + ')" class="btn  btn-sm btn-outline-success" title="Uygulama manuel olarak check et"><i class="fas fa-bolt"></i></button> ';
                     return content;
                 }
             },
@@ -220,6 +226,13 @@ function InitializeDataTable() {
             { data: "CreatedBy" },
             {
                 "data": "CreatedDate",
+                "render": function (data, type, JsonResultRow, meta) {
+                    return SetWithServerDateTime(systemDateTime, data);
+                }
+            },
+            { data: "UpdatedBy" },
+            {
+                "data": "UpdatedDate",
                 "render": function (data, type, JsonResultRow, meta) {
                     return SetWithServerDateTime(systemDateTime, data);
                 }
