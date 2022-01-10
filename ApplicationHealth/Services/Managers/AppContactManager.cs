@@ -9,16 +9,18 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
+using System.Collections.Generic;
+
 namespace ApplicationHealth.Services.Managers
 {
     public class AppContactManager : IAppContactService
     {
-        private readonly IAppContactRepository _AppContactRepository;
+        private readonly IAppContactRepository _appContactRepository;
         private readonly IAppUnitOfWork _unitOfWork;
 
         public AppContactManager(IAppContactRepository AppContactRepository, IAppUnitOfWork unitOfWork)
         {
-            _AppContactRepository = AppContactRepository;
+            _appContactRepository = AppContactRepository;
             _unitOfWork = unitOfWork;
         }
 
@@ -26,8 +28,7 @@ namespace ApplicationHealth.Services.Managers
         {
             try
             {
-                _AppContactRepository.Add(app);
-                _unitOfWork.CommitAsync();
+                _appContactRepository.Add(app);
                 if (_unitOfWork.Commit() > 0)
                 {
                     return new WebUIToast
@@ -63,8 +64,7 @@ namespace ApplicationHealth.Services.Managers
         {
             try
             {
-                _AppContactRepository.Delete(GetById(id));
-                _unitOfWork.CommitAsync();
+                _appContactRepository.Delete(GetById(id));
                 if (_unitOfWork.Commit() > 0)
                 {
                     return new WebUIToast
@@ -96,19 +96,20 @@ namespace ApplicationHealth.Services.Managers
             }
         }
 
+        public List<AppContact> GetAll(Expression<Func<AppContact, bool>> predicate = null)
+        {
+            return _appContactRepository.GetAll(predicate);
+        }
+
         public AppContact GetByFilter(Expression<Func<AppContact, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _appContactRepository.Get(predicate);
+
         }
 
         public AppContact GetById(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public WebUIToast Update(string name, string url, ushort interval)
-        {
-            throw new NotImplementedException();
+            return _appContactRepository.GetById(id);
         }
     }
 }

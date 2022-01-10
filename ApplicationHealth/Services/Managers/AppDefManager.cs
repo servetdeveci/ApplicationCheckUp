@@ -20,15 +20,15 @@ namespace ApplicationHealth.Services.Managers
     public class AppDefManager : IAppDefService
     {
         private readonly IAppDefRepository _appDefRepository;
+        private readonly IAppNotificationService _appNotificationService;
         private readonly IAppUnitOfWork _unitOfWork;
-        private readonly IMailService _mailService;
         private readonly ILogger<AppDefManager> _logger;
 
-        public AppDefManager(IAppDefRepository appDefRepository, IAppUnitOfWork unitOfWork, IMailService mailService, ILogger<AppDefManager> logger)
+        public AppDefManager(IAppDefRepository appDefRepository, IAppNotificationService appNotificationService, IAppUnitOfWork unitOfWork, ILogger<AppDefManager> logger)
         {
             _appDefRepository = appDefRepository;
+            _appNotificationService = appNotificationService;
             _unitOfWork = unitOfWork;
-            _mailService = mailService;
             _logger = logger;
         }
 
@@ -221,7 +221,7 @@ namespace ApplicationHealth.Services.Managers
                     var _httpClient = new HttpClient();
                     var response = await _httpClient.GetAsync(app.Url);
                     if (!response.IsSuccessStatusCode)
-                        await SendNotification(app);
+                        await _appNotificationService.SendNotification(app);
                     var res = UpdateAppStatus(app.AppDefId, DateTime.Now, response.IsSuccessStatusCode);
                     Console.WriteLine($"Name: {app.Name} Response: {response.StatusCode}");
                     _httpClient.Dispose();
@@ -266,34 +266,6 @@ namespace ApplicationHealth.Services.Managers
                 };
             }
         }
-        private async Task SendNotification(AppDef app)
-        {
-            foreach (var cont in GetAppNotificationContact(app.AppDefId))
-            {
-                switch (cont.NotificationType)
-                {
-                    case NotificationType.None:
-                        break;
-                    case NotificationType.Email:
-                        await GenerateEmailAndSend(app, cont);
-                        break;
-                    case NotificationType.Sms:
-                        break;
-                    case NotificationType.EmailSms:
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        private async Task GenerateEmailAndSend(AppDef app, AppContact item)
-        {
-            var email = new Email { toList = item.Email, subject = "App Check Up", content = app.Name + "is down. Last control-time " + app.LastControlDateTime.ToShortTimeString()  };
-            await _mailService.SendMailViaSystemNetAsync(email);
-        }
-        private IEnumerable<AppContact> GetAppNotificationContact(int id)
-        {
-            return _appDefRepository.Table.FirstOrDefault(m => m.AppDefId == id).NotificationContacts;
-        }
+       
     }
 }

@@ -2,15 +2,16 @@
 using ApplicationHealth.Domain.ViewModels;
 using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace ApplicationHealth.Services.Services
 {
     public interface IAppNotificationService
     {
         WebUIToast Add(AppNotification app);
-        WebUIToast Update(string name, string url, ushort interval);
         AppNotification GetByFilter(Expression<Func<AppNotification, bool>> predicate);
         AppNotification GetById(int id);
         WebUIToast Delete(int id);
+        Task SendNotification(AppDef app);
     }
 }
