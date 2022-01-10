@@ -39,12 +39,12 @@ namespace ApplicationHealth.Services.Managers
                 _appDefRepository.Add(app);
                 _unitOfWork.Commit();
                 _logger.LogTrace($"{CrudTwinProperty.CREATE} ==> AppDef: {app.Name} eklendi");
-                CheckAppIsUp(app.AppDefId).ConfigureAwait(false);
                 return new WebUIToast
                 {
                     header = "Başarılı",
                     icon = "success",
-                    message = $"{app.Name} kaydı oluşturuldu"
+                    message = $"{app.Name} kaydı oluşturuldu",
+                    data = app.AppDefId
                 };
 
 
@@ -157,12 +157,12 @@ namespace ApplicationHealth.Services.Managers
                 _unitOfWork.Commit();
                 _logger.LogTrace($"{CrudTwinProperty.UPDATE} ==> AppDefId: {app.AppDefId} güncellendi");
 
-                CheckAppIsUp(app.AppDefId).ConfigureAwait(false);
                 return new WebUIToast
                 {
                     header = "Başarılı",
                     icon = "success",
-                    message = $"{existing.Name} Güncellendi"
+                    message = $"{existing.Name} Güncellendi",
+                    data = app.AppDefId
                 };
             }
             catch (Exception ex)

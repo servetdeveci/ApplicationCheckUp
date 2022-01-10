@@ -5,5 +5,6 @@
         public string icon { get; set; }
         public string header { get; set; }
         public string message { get; set; }
+        public object data { get; set; }
     }
 }

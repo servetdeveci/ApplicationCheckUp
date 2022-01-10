@@ -26,6 +26,7 @@ function AddApp() {
             table.ajax.reload(null, false);
             if (res.icon == "success") {
                 $('#crudModal').modal('hide');
+                CheckAppIsUp(res.data);
             }
             $.toast({
                 heading: res.header,
@@ -119,7 +120,7 @@ function UpdateApp(_id) {
             if (res.icon == "success") {
                 $('#crudModal').modal('hide');
             }
-
+            CheckAppIsUp(res.data);
             $.toast({
                 heading: res.header,
                 text: res.message,
@@ -150,15 +151,6 @@ function CheckAppIsUp(_id) {
         data: { id: _id },
         success: function (res) {
             table.ajax.reload(null, false);
-            $.toast({
-                heading: res.header,
-                text: res.message,
-                position: 'top-right',
-                loaderBg: '#FF6849',
-                icon: res.icon,
-                show: 3500,
-                stack: 6,
-            });
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $.toast({
