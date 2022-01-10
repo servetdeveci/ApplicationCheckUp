@@ -27,7 +27,7 @@ namespace ApplicationHealth.MvcWebUI.Controllers
         }
         public IActionResult Detail(int id)
         {
-            return View(_appService.GetById(id));
+            return View(_appService.GetAppDetail(id));
 
         }
         public IActionResult _InsertApp()

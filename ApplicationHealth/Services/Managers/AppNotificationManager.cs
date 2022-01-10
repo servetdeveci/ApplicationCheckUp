@@ -96,7 +96,7 @@ namespace ApplicationHealth.Services.Managers
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _logger.LogError($"{CrudTwinProperty.DELETE} ==> notiId: {id} silinirken hata oluştu. ex: {ex}");
 

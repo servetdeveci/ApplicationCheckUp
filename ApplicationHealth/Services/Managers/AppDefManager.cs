@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
-using ApplicationHealth.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationHealth.Services.Managers
 {
@@ -136,11 +136,27 @@ namespace ApplicationHealth.Services.Managers
         }
         public AppDef GetByFilter(Expression<Func<AppDef, bool>> predicate)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _appDefRepository.Get(predicate);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.GET} ==> GetByFilter  ex: {ex}");
+                return null;
+            }
         }
         public AppDef GetById(int id)
         {
-            return _appDefRepository.GetById(id);
+            try
+            {
+                return _appDefRepository.GetById(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.GET} ==> GetById  ex: {ex}");
+                return null;
+            }
         }
         public WebUIToast Update(AppDef app)
         {
@@ -265,6 +281,23 @@ namespace ApplicationHealth.Services.Managers
                 };
             }
         }
-       
+        public AppDetailDTO GetAppDetail(int id)
+        {
+            try
+            {
+                var model = new AppDetailDTO
+                {
+                    App = GetById(id),
+                    Contacts = _appDefRepository.Table.Where(m => m.AppDefId == id).Include(m=> m.NotificationContacts).FirstOrDefault().NotificationContacts.ToList(),
+                    Notifications = _appDefRepository.Table.Where(m => m.AppDefId == id).Include(m => m.Notifications).FirstOrDefault().Notifications.OrderByDescending(m=> m.SentDateTime).ToList(),
+                };
+                return model;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.GET} ==> GetAppDetail  ex: {ex}");
+                return null;
+            }
+        }
     }
 }

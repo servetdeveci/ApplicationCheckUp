@@ -1,4 +1,4 @@
-﻿@model ApplicationHealth.Domain.Entities.AppDef
+﻿@model ApplicationHealth.Domain.ViewModels.AppDetailDTO
 
 @{
     ViewData["Title"] = "Detail";
@@ -12,51 +12,97 @@
     <div class="card-body">
         <div class="row">
             <div class="col-3 text-left">
-                Adı: <strong> @Model.Name</strong>
+                Adı: <strong> @Model.App.Name</strong>
             </div>
-            <div class="col-6 text-left">
-                Url: <strong> @Model.Url</strong>
+            <div class="col-4 text-left">
+                Url: <strong> @Model.App.Url</strong>
             </div>
             <div class="col-2 text-left">
-                Interval: <strong> @Model.Interval</strong>
+                @if (Model.App.IsUp)
+                {
+                    <span class="text-success"><i class="fa fa-check"> </i> Up</span>
+                }
+                else
+                {
+                    <span class="text-danger"><i class="fa fa-circle"> </i> Down</span>
+                }
+
+            </div>
+            <div class="col-2 text-left">
+                Interval: <strong> @Model.App.Interval</strong>
             </div>
             <div class="col-1 text-right">
-                <a href="/home" class="btn btn-sm btn-outline-secondary">
+                <button onclick="javascript:history.go(-1)" class="btn btn-sm btn-outline-secondary">
                     <i class="fa fa-arrow-left"></i> Geri
-                </a>
+                </button>
             </div>
         </div>
     </div>
 </div>
+
 <div class="row">
-    <div class="col col-sm-5">
-        <div class="card">
+    <div class="col-12">
+        <div class="card  mb-3">
             <div class="card-body">
-                <table class="table" width="100%" id="AppContact">
+                <h3> <i class="fa fa-user"></i> Bildirim Kişileri</h3>
+
+                <table class="table" width="100%" id="appContact">
                     <thead>
-                        <tr class="bg-info text-white">
+                        <tr class="bg-secondary text-white">
                             <th class="all">#</th>
-                            <th class="all">Actions</th>
-                            <th class="all">Up/Down</th>
+                            <th class="all">Adı</th>
+                            <th class="all">Mail</th>
+                            <th class="all">Telefon</th>
+                            <th class="all">Tipi</th>
 
                         </tr>
                     </thead>
+                    <tbody>
+                        @foreach (var item in Model.Contacts)
+                        {
+                            <tr class="">
+                                <td>
+                                    <button onclick="DeleteContact(@item.AppNotificationContactId)" class="btn btn-sm">
+                                        <i class="fa fa-trash text-danger"></i>
+                                    </button>
+                                </td>
+                                <td>@item.NotificationContactName</td>
+                                <td>@item.Email </td>
+                                <td>@item.Phone </td>
+                                <td>@item.NotificationType.ToString()</td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <div class="col col-sm-7">
-        <div class="card">
+    <div class="col-12">
+        <div class="card  mb-3">
             <div class="card-body">
-                <table class="table" width="100%" id="AppContact">
+                <h3> <i class="fa fa-bell"></i> Bildirimler</h3>
+                <table class="table" width="100%" id="appNotiTable">
                     <thead>
-                        <tr class="bg-info text-white">
-                            <th class="all">#</th>
-                            <th class="all">Actions</th>
-                            <th class="all">Up/Down</th>
+                        <tr class="bg-secondary text-white">
+                            <th class="all">Mesaj</th>
+                            <th class="all">Kişi</th>
+                            <th class="all">Tip</th>
+                            <th class="all">Zaman</th>
 
                         </tr>
                     </thead>
+                    <tbody>
+                        @foreach (var item in Model.Notifications)
+                        {
+                            <tr class="">
+                                
+                                <td>@item.Message</td>
+                                <td>@item.Contact.NotificationContactName </td>
+                                <td>@item.Contact.NotificationType.ToString()</td>
+                                <td>@item.SentDateTime.ToString("yyyy-MM-dd HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -67,5 +113,14 @@
 
 @section Scripts{
     <script src="/lib/DataTables/datatables.min.js"></script>
-    <script src="/js/home/detail.js" asp-append-version="true"></script>
+    <script>
+        $('#appContact').DataTable({
+            order: [[3, 'desc']],
+            language: { url: "/lib/DataTables/Turkish.json" },
+        });
+        $('#appNotiTable').DataTable({
+            order: [[3, 'desc']],
+            language: { url: "/lib/DataTables/Turkish.json" },
+        });
+    </script>
 }

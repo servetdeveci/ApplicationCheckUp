@@ -22,5 +22,6 @@ namespace ApplicationHealth.Services.Services
         AppDefDataTable GetAppDefDataTable(BaseFilterParameters filters);
         Task CheckAppIsUp(AppDef item);
         Task<WebUIToast> CheckAppIsUp(int id);
+        AppDetailDTO GetAppDetail(int id);
     }
 }
