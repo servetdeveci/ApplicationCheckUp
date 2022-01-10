@@ -15,18 +15,22 @@ Gönderilen bildirimlerin tümü bildirimler menusünden görüntülenebilir.
 ### ApplicationHealth.WorkerService
 Uygulamların ayakta olup olmadığını kontrol eden timeout sonunda bildirim gönderen uygualamadır. Bildirim sadece email ile olmaktadır. Ancak sms olması içinde alt yapı mevcuttur. 
 
-```diff
-+ Çalıştırılması
-```
-
 
 ### Docker ile Çalıştırılması
 Docker Desktop uygulası kurularak docker-compose.yml dosyası ile tüm proje çalıştırılabilir. Projelerin docker build dosyaları ayrıca ana dizinde bulunmaktadır. 
 
+```diff
++ $ docker-compose build
++ $ docker-compose up
+
+```
+
 ### Visual Studio ile Çalıştırılması
 Mevcut veritabanı sunucusuna DbContext migrate edilerek ve ConnectionString de gerekli değişiklikler yapılarak Visual Studio üzerinden çoklu proje çalıştırma seçeneği ile proje çalıştırılabilir.
 
-- ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) `Dikkat! Docker veya Visual studio ile çalıştırışırlem connectionString'lere dikkat edilmelidir.`
+```diff
+- Dikkat! Docker veya Visual studio ile çalıştırışırlem connectionString'lere dikkat edilmelidir.
+```
 
 ### Uygulama genel mantığını anlatan  ekran görüntüleri 
 
