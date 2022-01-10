@@ -22,6 +22,7 @@ namespace ApplicationHealth.Domain.Entities
         [Range(1, short.MaxValue)]
         public short Interval { get; set; } = 1;
         public DateTime LastControlDateTime { get; set; }
+        public DateTime LastNotificationDateTime { get; set; }
         public bool IsUp { get; set; } = false;
         public IEnumerable<AppContact> NotificationContacts { get; set; }
         public IEnumerable<AppNotification> Notifications { get; set; }

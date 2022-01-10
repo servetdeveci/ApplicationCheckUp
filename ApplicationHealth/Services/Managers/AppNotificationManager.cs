@@ -114,23 +114,29 @@ namespace ApplicationHealth.Services.Managers
 
         public async Task SendNotification(AppDef app)
         {
-            foreach (var cont in GetAppNotificationContact(app.AppDefId))
+            var interval = (int)(DateTime.Now - app.LastNotificationDateTime).TotalMinutes;
+            if (interval >= app.Interval)
             {
-                switch (cont.NotificationType)
+                foreach (var cont in GetAppNotificationContact(app.AppDefId))
                 {
-                    case NotificationType.None:
-                        break;
-                    case NotificationType.Email:
-                        await GenerateEmailAndSend(app, cont);
-                        break;
-                    case NotificationType.Sms:
-                        break;
-                    case NotificationType.EmailSms:
-                        break;
-                    default:
-                        break;
+                    switch (cont.NotificationType)
+                    {
+                        case NotificationType.None:
+                            break;
+                        case NotificationType.Email:
+                            await GenerateEmailAndSend(app, cont);
+                            break;
+                        case NotificationType.Sms:
+                            break;
+                        case NotificationType.EmailSms:
+                            break;
+                        default:
+                            break;
+                    }
                 }
+
             }
+
         }
         private async Task GenerateEmailAndSend(AppDef app, AppContact item)
         {
@@ -142,6 +148,6 @@ namespace ApplicationHealth.Services.Managers
             return _appContactService.GetAll(m => m.AppDefId == id);
         }
 
-        
+
     }
 }

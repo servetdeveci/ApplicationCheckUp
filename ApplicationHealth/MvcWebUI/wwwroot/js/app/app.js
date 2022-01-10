@@ -181,7 +181,9 @@ function AddNotificationContactToApp(_id) {
         url: "/Notification/AddNotificationContactToApp",
         data: { contact: model },
         success: function (res) {
-
+            if (res.icon == "success") {
+                $('#crudModal').modal('hide');
+            }
             $.toast({
                 heading: res.header,
                 text: res.message,
