@@ -15,7 +15,11 @@ Gönderilen bildirimlerin tümü bildirimler menusünden görüntülenebilir.
 ### ApplicationHealth.WorkerService
 Uygulamların ayakta olup olmadığını kontrol eden timeout sonunda bildirim gönderen uygualamadır. Bildirim sadece email ile olmaktadır. Ancak sms olması içinde alt yapı mevcuttur. 
 
-## Çalıştırılması
+```diff
++ Çalıştırılması
+```
+
+
 ### Docker ile Çalıştırılması
 Docker Desktop uygulası kurularak docker-compose.yml dosyası ile tüm proje çalıştırılabilir. Projelerin docker build dosyaları ayrıca ana dizinde bulunmaktadır. 
 
