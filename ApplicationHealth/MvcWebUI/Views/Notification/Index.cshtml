@@ -9,14 +9,11 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12 col-sm-6 text-left">
-                <h3> <i class="fa fa-cubes"></i> Uygulamalar</h3>
+                <h3> <i class="fa fa-bell"></i> Bildirimler</h3>
 
             </div>
             <div class="col-12 col-sm-6 text-right">
-                <button onclick="LoadInsertAppPartial()" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#crudModal">
-                    <i class="fa fa-plus"></i>
-                    Yeni Uygulama
-                </button>
+
             </div>
         </div>
     </div>
@@ -30,16 +27,10 @@
             <thead>
                 <tr class="bg-secondary text-white">
                     <th class="all">#</th>
-                    <th class="all">Actions</th>
                     <th class="all">Application</th>
-                    <th class="all">Url</th>
-                    <th class="all">Interval</th>
-                    <th class="none">CreatedBy</th>
-                    <th class="none">CreatedDate</th>
-                    <th class="none">UpdatedBy</th>
-                    <th class="none">UpdatedDate</th>
-                    <th class="desktop">Last Check-Up</th>
-                    <th class="all">Up/Down</th>
+                    <th class="all">N. Message</th>
+                    <th class="desktop">User</th>
+                    <th class="all">Time</th>
 
                 </tr>
             </thead>
@@ -63,5 +54,5 @@
 
 @section Scripts{
     <script src="/lib/DataTables/datatables.min.js"></script>
-    <script src="/js/app/app.js" asp-append-version="true"></script>
+    <script src="/js/notification/notification.js"></script>
 }

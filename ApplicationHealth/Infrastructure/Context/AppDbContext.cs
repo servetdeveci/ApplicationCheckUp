@@ -40,7 +40,7 @@ namespace ApplicationHealth.Infrastructure.Context
 
             modelBuilder.Entity<AppDef>()
                  .HasMany(app => app.Notifications)
-                 .WithOne(appNoti => appNoti.AppDeff)
+                 .WithOne(appNoti => appNoti.AppDef)
                  .HasForeignKey(appNoti => appNoti.AppDefId)
                  .OnDelete(DeleteBehavior.Cascade);
 

@@ -30,61 +30,32 @@ function InitializeDataTable() {
         },
         columns: [
             {
-                "data": "AppDefId",
+                "data": "AppNotificationId",
                 "render": function (data, type, JsonResultRow, meta) {
                     return "";
                 }
             },
            
             {
-                "data": "Name",
+                "data": "AppDefId",
                 "orderable": false,
                 "render": function (data, type, JsonResultRow, meta) {
                     var content = '<a href="/Application/detail/' + JsonResultRow.AppDefId + '" class="btn  btn-sm btn-outline-secondary w-100" title="Detay">' + data + '</button> ';
                     return content;
                 }
             },
+           
             {
-                "data": "Url",
-                "orderable": false,
+                "data": "Message",
                 "render": function (data, type, JsonResultRow, meta) {
-                    var content = '<a target="_blank" href="' + data + '" class="btn  btn-sm btn-outline-secondary w-100 mw-200" title="Yeni sekmede aç --- ' + data + '">' + data + '</button> ';
-                    return content;
+                    return data;
                 }
             },
+            { data: "Contact.Email" },
             {
-                "data": "Interval",
-                "render": function (data, type, JsonResultRow, meta) {
-                    return data + " dk";
-                }
-            },
-            { data: "CreatedBy" },
-            {
-                "data": "CreatedDate",
+                "data": "SentDateTime",
                 "render": function (data, type, JsonResultRow, meta) {
                     return SetWithServerDateTime(systemDateTime, data);
-                }
-            },
-            { data: "UpdatedBy" },
-            {
-                "data": "UpdatedDate",
-                "render": function (data, type, JsonResultRow, meta) {
-                    return SetWithServerDateTime(systemDateTime, data);
-                }
-            },
-            {
-                "data": "LastControlDateTime",
-                "render": function (data, type, JsonResultRow, meta) {
-                    return SetWithServerDateTime(systemDateTime, data);
-                }
-            },
-            {
-                "data": "IsUp",
-                "render": function (data, type, JsonResultRow, meta) {
-                    if (data == true)
-                        return "<span class='text-success'> <i class='fa fa-check'></i> " + "UP </span>"
-                    else
-                        return "<span class='text-danger'> <i class='fa fa-circle'></i> " + "DOWN </span>"
                 }
             },
         ],
