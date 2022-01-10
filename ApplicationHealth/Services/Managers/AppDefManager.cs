@@ -88,7 +88,7 @@ namespace ApplicationHealth.Services.Managers
             {
                 var deleted = GetById(id);
                 _appDefRepository.Delete(deleted);
-                var abc = _unitOfWork.CommitAsync();
+                var abc = _unitOfWork.Commit();
                 _logger.LogTrace($"{CrudTwinProperty.DELETE} ==> AppDefId: {id} silindi");
 
                 return new WebUIToast
@@ -202,9 +202,9 @@ namespace ApplicationHealth.Services.Managers
                 _logger.LogTrace($"{CrudTwinProperty.UPDATE} ==> AppDefId: {id} güncellendi");
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _logger.LogError($"{CrudTwinProperty.UPDATE} ==> AppDefId: {id} güncellenirken hata oluştu");
+                _logger.LogError($"{CrudTwinProperty.UPDATE} ==> AppDefId: {id} güncellenirken hata oluştu. ex: {ex}");
                 return false;
             }
         }
