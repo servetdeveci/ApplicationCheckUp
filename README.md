@@ -40,7 +40,6 @@ Bildirim kaydı eklemesi
  ![image](https://user-images.githubusercontent.com/62391718/148831383-1ac692b0-3da4-45da-a559-7eeb403435ae.png)
 
 Gelen Email'ler
-![image](https://user-images.githubusercontent.com/62391718/148831829-c70c285b-2195-4c19-bd03-2df9d3400aef.png)
-
+![image](https://user-images.githubusercontent.com/62391718/148832011-cf712566-d047-4e71-9e62-e52ea43d1fe5.png)
 
 
