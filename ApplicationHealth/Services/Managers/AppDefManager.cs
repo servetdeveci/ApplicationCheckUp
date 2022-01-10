@@ -39,8 +39,7 @@ namespace ApplicationHealth.Services.Managers
                 _appDefRepository.Add(app);
                 _unitOfWork.Commit();
                 _logger.LogTrace($"{CrudTwinProperty.CREATE} ==> AppDef: {app.Name} eklendi");
-                CheckAppIsUp(app.AppDefId);
-
+                CheckAppIsUp(app.AppDefId).ConfigureAwait(false);
                 return new WebUIToast
                 {
                     header = "Başarılı",
@@ -89,7 +88,7 @@ namespace ApplicationHealth.Services.Managers
             {
                 var deleted = GetById(id);
                 _appDefRepository.Delete(deleted);
-                _unitOfWork.CommitAsync();
+                var abc = _unitOfWork.CommitAsync();
                 _logger.LogTrace($"{CrudTwinProperty.DELETE} ==> AppDefId: {id} silindi");
 
                 return new WebUIToast
@@ -158,7 +157,7 @@ namespace ApplicationHealth.Services.Managers
                 _unitOfWork.Commit();
                 _logger.LogTrace($"{CrudTwinProperty.UPDATE} ==> AppDefId: {app.AppDefId} güncellendi");
 
-                _ = await CheckAppIsUp(app.AppDefId);
+                CheckAppIsUp(app.AppDefId).ConfigureAwait(false);
                 return new WebUIToast
                 {
                     header = "Başarılı",
@@ -209,7 +208,6 @@ namespace ApplicationHealth.Services.Managers
                 return false;
             }
         }
-
         public async Task CheckAppIsUp(AppDef item)
         {
             try
@@ -232,7 +230,6 @@ namespace ApplicationHealth.Services.Managers
                 _logger.LogError($"WorkerService ==> AppDefId: {item.AppDefId} güncellenirken hata oluştu");
             }
         }
-
         public async Task<WebUIToast> CheckAppIsUp(int id)
         {
             var item = GetById(id);
