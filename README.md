@@ -36,8 +36,13 @@ Uygulamalar
 Bildirim kaydı eklemesi
 ![image](https://user-images.githubusercontent.com/62391718/148823215-085c78ea-319a-4343-9faa-30fb2ea7b2cc.png)
  
+ Worker Servisin arka planda çalışması
+ ![image](https://user-images.githubusercontent.com/62391718/148832286-2262b6dd-e375-4d14-9e44-d1eed8684b53.png)
+
  Gönderilen bildirimler
  ![image](https://user-images.githubusercontent.com/62391718/148831383-1ac692b0-3da4-45da-a559-7eeb403435ae.png)
 
+Gelen Email'ler
+![image](https://user-images.githubusercontent.com/62391718/148832011-cf712566-d047-4e71-9e62-e52ea43d1fe5.png)
 
 
