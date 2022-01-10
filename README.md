@@ -29,9 +29,15 @@ Mevcut veritabanı sunucusuna DbContext migrate edilerek ve ConnectionString de 
 - ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) `Dikkat! Docker veya Visual studio ile çalıştırışırlem connectionString'lere dikkat edilmelidir.`
 
 ### Uygulama genel mantığını anlatan  ekran görüntüleri 
+
+Uygulamalar
 ![image](https://user-images.githubusercontent.com/62391718/148823000-2c3ce110-22dd-43d6-8215-08b3f47abd60.png)
 
+Bildirim kaydı eklemesi
 ![image](https://user-images.githubusercontent.com/62391718/148823215-085c78ea-319a-4343-9faa-30fb2ea7b2cc.png)
-  
+ 
+ Gönderilen bildirimler
+ ![image](https://user-images.githubusercontent.com/62391718/148831383-1ac692b0-3da4-45da-a559-7eeb403435ae.png)
+
 
 
