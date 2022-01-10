@@ -34,25 +34,7 @@ namespace ApplicationHealth.WorkerService
                     var appList = _appService.GetAll();
                     foreach (var item in appList)
                     {
-                        try
-                        {
-                            var interval = (DateTime.Now - item.LastControlDateTime).TotalMinutes;
-                            if (interval > item.Interval)
-                            {
-                                var _httpClient = new HttpClient();
-                                var response = await _httpClient.GetAsync(item.Url);
-                                var res = _appService.UpdateAppStatus(item.AppDefId, DateTime.Now, response.IsSuccessStatusCode);
-                                Console.WriteLine($"Name: {item.Name} Response: {response.StatusCode}");
-                                _httpClient.Dispose();
-                            }
-
-                        }
-                        catch (Exception ex)
-                        {
-                            var res = _appService.UpdateAppStatus(item.AppDefId, DateTime.Now, false);
-                            Console.WriteLine($"Name: {item.Name} Response: {ex.Message}");
-                            _logger.LogError($"WorkerService ==> AppDefId: {item.AppDefId} güncellenirken hata oluþtu");
-                        }
+                        await _appService.CheckAppIsUp(item);
                     }
                 }
 

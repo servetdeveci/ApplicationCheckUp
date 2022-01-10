@@ -5,6 +5,7 @@ using ApplicationHealth.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace ApplicationHealth.Services.Services
 {
@@ -19,7 +20,7 @@ namespace ApplicationHealth.Services.Services
         List<AppDef> GetAll(Expression<Func<AppDef, bool>> predicate = null);
         WebUIToast Delete(int id);
         AppDefDataTable GetAppDefDataTable(BaseFilterParameters filters);
-        
-
+        Task CheckAppIsUp(AppDef item);
+        Task<WebUIToast> CheckAppIsUp(int id);
     }
 }

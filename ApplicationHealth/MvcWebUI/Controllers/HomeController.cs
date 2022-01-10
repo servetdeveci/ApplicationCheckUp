@@ -38,7 +38,7 @@ namespace ApplicationHealth.MvcWebUI.Controllers
         public JsonResult InsertApp(AppDef app)
         {
             return new JsonResult(_appService.Add(app));
-        } 
+        }
         [HttpPost]
         public JsonResult DeleteApp(int id)
         {
@@ -53,7 +53,12 @@ namespace ApplicationHealth.MvcWebUI.Controllers
         {
             return new JsonResult(_appService.Update(app));
         }
-      
+        [HttpPost]
+        public JsonResult CheckAppIsUp(int id)
+        {
+            return new JsonResult(_appService.CheckAppIsUp(id));
+        }
+
         [HttpPost]
         public AppDefDataTable GetAppDefDataTable(BaseFilterParameters filters)
         {

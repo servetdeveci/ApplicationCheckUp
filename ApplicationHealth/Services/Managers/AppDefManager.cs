@@ -11,6 +11,8 @@ using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace ApplicationHealth.Services.Managers
 {
@@ -37,6 +39,7 @@ namespace ApplicationHealth.Services.Managers
                 _appDefRepository.Add(app);
                 _unitOfWork.Commit();
                 _logger.LogTrace($"{CrudTwinProperty.CREATE} ==> AppDef: {app.Name} eklendi");
+                CheckAppIsUp(app.AppDefId);
 
                 return new WebUIToast
                 {
@@ -155,6 +158,7 @@ namespace ApplicationHealth.Services.Managers
                 _unitOfWork.Commit();
                 _logger.LogTrace($"{CrudTwinProperty.UPDATE} ==> AppDefId: {app.AppDefId} güncellendi");
 
+                _ = await CheckAppIsUp(app.AppDefId);
                 return new WebUIToast
                 {
                     header = "Başarılı",
@@ -203,6 +207,61 @@ namespace ApplicationHealth.Services.Managers
             {
                 _logger.LogError($"{CrudTwinProperty.UPDATE} ==> AppDefId: {id} güncellenirken hata oluştu");
                 return false;
+            }
+        }
+
+        public async Task CheckAppIsUp(AppDef item)
+        {
+            try
+            {
+                var interval = (DateTime.Now - item.LastControlDateTime).TotalMinutes;
+                if (interval > item.Interval)
+                {
+                    var _httpClient = new HttpClient();
+                    var response = await _httpClient.GetAsync(item.Url);
+                    var res = UpdateAppStatus(item.AppDefId, DateTime.Now, response.IsSuccessStatusCode);
+                    Console.WriteLine($"Name: {item.Name} Response: {response.StatusCode}");
+                    _httpClient.Dispose();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var res = UpdateAppStatus(item.AppDefId, DateTime.Now, false);
+                Console.WriteLine($"Name: {item.Name} Response: {ex.Message}");
+                _logger.LogError($"WorkerService ==> AppDefId: {item.AppDefId} güncellenirken hata oluştu");
+            }
+        }
+
+        public async Task<WebUIToast> CheckAppIsUp(int id)
+        {
+            var item = GetById(id);
+
+            try
+            {
+                var _httpClient = new HttpClient();
+                var response = await _httpClient.GetAsync(item.Url);
+                var res = UpdateAppStatus(item.AppDefId, DateTime.Now, response.IsSuccessStatusCode);
+                _httpClient.Dispose();
+
+                return new WebUIToast
+                {
+                    header = "Başarılı",
+                    icon = "success",
+                    message = $"{item.Name} uygulama check edildi"
+                };
+
+            }
+            catch (Exception ex)
+            {
+                UpdateAppStatus(item.AppDefId, DateTime.Now, false);
+                _logger.LogError($"{CrudTwinProperty.CHECK} ==> AppDefId: {item.AppDefId} Ex: {ex.Message}");
+                return new WebUIToast
+                {
+                    header = "Başarısız",
+                    icon = "error",
+                    message = "Uygulama ayakta değil"
+                };
             }
         }
     }
