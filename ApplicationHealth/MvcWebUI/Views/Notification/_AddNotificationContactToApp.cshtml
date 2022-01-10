@@ -1,0 +1,48 @@
+﻿@model ApplicationHealth.Domain.ViewModels.AppContactDTO
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Uygulamaya Bildirim Kaydı Oluştur</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+
+    <div class="row mb-1">
+        <div class="col-4">Kişi Adı</div>
+        <div class="col-8"><input type="text" class="form-control" id="name" placeholder="Ahmet Soyal" /></div>
+    </div> 
+    <div class="row mb-1">
+        <div class="col-4">Cep Telefonu</div>
+        <div class="col-8"><input type="text" class="form-control" id="phone" placeholder="5430002211" /></div>
+    </div>
+    <div class="row mb-1">
+        <div class="col-4">Email</div>
+        <div class="col-8"><input type="text" class="form-control" id="email" placeholder="ahmetsoyal@gmail.com" /></div>
+    </div>
+    <div class="row mb-1">
+        <div class="col-4">Bildirim Tipi</div>
+        <div class="col-8">
+            <select id="type" class="form-control">
+                <option value="@ApplicationHealth.Domain.Enums.NotificationType.None">
+                    @ApplicationHealth.Domain.Enums.NotificationType.None.ToString()
+                </option>
+                <option value="@ApplicationHealth.Domain.Enums.NotificationType.Email">
+                    @ApplicationHealth.Domain.Enums.NotificationType.Email.ToString()
+                </option>
+             <option value="@ApplicationHealth.Domain.Enums.NotificationType.Sms">
+                    @ApplicationHealth.Domain.Enums.NotificationType.Sms.ToString()
+                </option>
+             <option value="@ApplicationHealth.Domain.Enums.NotificationType.EmailSms">
+                    @ApplicationHealth.Domain.Enums.NotificationType.EmailSms.ToString()
+                </option>
+            </select>
+        </div>
+    </div>
+   
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+    <button type="button" class="btn btn-primary" onclick="AddNotificationContactToApp(@Model.AppDefId)">Oluştur</button>
+</div>

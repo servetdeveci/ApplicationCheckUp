@@ -1,4 +1,7 @@
-﻿namespace ApplicationHealth.Domain.Enums
+﻿using System;
+using System.Linq;
+
+namespace ApplicationHealth.Domain.Enums
 {
     public enum NotificationType : byte
     {
@@ -7,4 +10,5 @@
         Sms,
         EmailSms
     }
+    
 }

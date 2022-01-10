@@ -35,7 +35,7 @@ namespace ApplicationHealth.Services.Managers
                     {
                         header = "Başarılı",
                         icon = "success",
-                        message = "Yeni App eklendi"
+                        message = "Uygulama bildirim kişişi eklendi"
                     };
                 }
                 else
@@ -71,7 +71,7 @@ namespace ApplicationHealth.Services.Managers
                     {
                         header = "Başarılı",
                         icon = "success",
-                        message = "Uygulama Silindi"
+                        message = "Kişi Silindi"
                     };
                 }
                 else
@@ -91,7 +91,7 @@ namespace ApplicationHealth.Services.Managers
                 {
                     header = "Başarısız",
                     icon = "error",
-                    message = "Eklenirken bir istisna oluştu"
+                    message = "Silinirken bir istisna oluştu"
                 };
             }
         }

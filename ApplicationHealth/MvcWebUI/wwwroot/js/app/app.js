@@ -9,10 +9,9 @@ $(document).ready(function () {
 ///////////////////// CRUD /////////////////////
 
 function LoadInsertAppPartial() {
-    LoadPage("/Home/_InsertApp", "#dynamicContent");
+    LoadPage("/Application/_InsertApp", "#dynamicContent");
 }
 function AddApp() {
-
     var model = {
         Name: $("#name").val(),
         Url: $("#url").val(),
@@ -20,7 +19,7 @@ function AddApp() {
     }
     $.ajax({
         type: "post",
-        url: "/Home/InsertApp",
+        url: "/Application/InsertApp",
         data: { app: model },
         success: function (res) {
             table.ajax.reload(null, false);
@@ -68,7 +67,7 @@ function DeleteApp(_id) {
             if (isConfirm) {
                 $.ajax({
                     type: "post",
-                    url: "/Home/DeleteApp",
+                    url: "/Application/DeleteApp",
                     data: { id: _id },
                     success: function (res) {
                         table.ajax.reload(null, false);
@@ -102,7 +101,7 @@ function DeleteApp(_id) {
         });
 }
 function LoadUpdateAppPartial(_id) {
-    LoadPage("/Home/_UpdateApp/" + _id, "#dynamicContent");
+    LoadPage("/Application/_UpdateApp/" + _id, "#dynamicContent");
 }
 function UpdateApp(_id) {
     var model = {
@@ -113,7 +112,7 @@ function UpdateApp(_id) {
     }
     $.ajax({
         type: "post",
-        url: "/Home/UpdateApp",
+        url: "/Application/UpdateApp",
         data: { app: model },
         success: function (res) {
             table.ajax.reload(null, false);
@@ -147,10 +146,51 @@ function UpdateApp(_id) {
 function CheckAppIsUp(_id) {
     $.ajax({
         type: "post",
-        url: "/Home/CheckAppIsUp",
+        url: "/Application/CheckAppIsUp",
         data: { id: _id },
         success: function (res) {
             table.ajax.reload(null, false);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            $.toast({
+                heading: xhr.status,
+                text: xhr.message,
+                position: 'top-right',
+                loaderBg: '#FF6849',
+                icon: 'error',
+                hideAfter: 5000,
+                stack: 6
+            });
+        },
+    });
+}
+function LoadAddContact(_id) {
+    LoadPage("/Notification/_AddNotificationContactToApp/" + _id, "#dynamicContent");
+}
+function AddNotificationContactToApp(_id) {
+    var model = {
+        AppDefId: _id,
+        NotificationContactName: $("#name").val(),
+        Email: $("#email").val(),
+        Phone: $("#phone").val(),
+        NotificationType: $("#type").val()
+    };
+
+    $.ajax({
+        type: "post",
+        url: "/Notification/AddNotificationContactToApp",
+        data: { contact: model },
+        success: function (res) {
+
+            $.toast({
+                heading: res.header,
+                text: res.message,
+                position: 'top-right',
+                loaderBg: '#FF6849',
+                icon: res.icon,
+                show: 3500,
+                stack: 6,
+            });
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $.toast({
@@ -177,7 +217,7 @@ function InitializeDataTable() {
         pageLength: 10,
         scrollX: true,
         ajax: {
-            "url": '/home/GetAppDefDataTable',
+            "url": '/Application/GetAppDefDataTable',
             "type": "POST",
             "datatype": "json",
             "data": function (d) {
@@ -203,6 +243,7 @@ function InitializeDataTable() {
                     var content = '<button onclick="DeleteApp(' + JsonResultRow.AppDefId + ')" class="btn  btn-sm btn-outline-danger" title="Bu uygulamayı sil"><i class="fa fa-trash"></i></button> ';
                     content += '<button onclick="LoadUpdateAppPartial(' + JsonResultRow.AppDefId + ')" data-toggle="modal" data-target="#crudModal" class="btn  btn-sm btn-outline-info" title="Kayıt ayarlarını güncelle"><i class="fa fa-edit"></i></button> ';
                     content += '<button onclick="CheckAppIsUp(' + JsonResultRow.AppDefId + ')" class="btn  btn-sm btn-outline-success" title="Uygulama manuel olarak check et"><i class="fas fa-bolt"></i></button> ';
+                    content += '<button onclick="LoadAddContact(' + JsonResultRow.AppDefId + ')" class="btn  btn-sm btn-outline-secondary" data-toggle="modal" data-target="#crudModal" title="Bildirim gönderilmesi için kişi kaydı ekler"><i class="fa fa-user"></i></button> ';
                     return content;
                 }
             },
@@ -210,7 +251,7 @@ function InitializeDataTable() {
                 "data": "Name",
                 "orderable": false,
                 "render": function (data, type, JsonResultRow, meta) {
-                    var content = '<a href="/home/detail/' + JsonResultRow.AppDefId + '" class="btn  btn-sm btn-outline-secondary w-100" title="Detay">' + data + '</button> ';
+                    var content = '<a href="/Application/detail/' + JsonResultRow.AppDefId + '" class="btn  btn-sm btn-outline-secondary w-100" title="Detay">' + data + '</button> ';
                     return content;
                 }
             },
@@ -222,7 +263,12 @@ function InitializeDataTable() {
                     return content;
                 }
             },
-            { data: "Interval" },
+            {
+                "data": "Interval",
+                "render": function (data, type, JsonResultRow, meta) {
+                    return data + " dk";
+                }
+            },
             { data: "CreatedBy" },
             {
                 "data": "CreatedDate",
@@ -256,5 +302,5 @@ function InitializeDataTable() {
     });
     setInterval(function () {
         table.ajax.reload(null, false);
-    }, 10000);
+    }, 5000);
 }

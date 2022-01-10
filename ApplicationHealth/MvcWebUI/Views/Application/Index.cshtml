@@ -7,10 +7,18 @@
 
 <div class="card mb-3  text-right">
     <div class="card-body">
-        <button onclick="LoadInsertAppPartial()" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#crudModal">
-            <i class="fa fa-plus"></i>
-            Yeni Uygulama
-        </button>
+        <div class="row">
+            <div class="col-12 col-sm-6 text-left">
+                <h3> <i class="fa fa-cubes"></i> Uygulamalar</h3>
+
+            </div>
+            <div class="col-12 col-sm-6 text-right">
+                <button onclick="LoadInsertAppPartial()" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#crudModal">
+                    <i class="fa fa-plus"></i>
+                    Yeni Uygulama
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -27,7 +35,7 @@
                     <th class="all">Url</th>
                     <th class="all">Interval</th>
                     <th class="none">CreatedBy</th>
-                    <th class="none">CreatedDate</th> 
+                    <th class="none">CreatedDate</th>
                     <th class="none">UpdatedBy</th>
                     <th class="none">UpdatedDate</th>
                     <th class="desktop">Last Check-Up</th>
@@ -55,5 +63,5 @@
 
 @section Scripts{
     <script src="/lib/DataTables/datatables.min.js"></script>
-    <script src="/js/home/home.js" asp-append-version="true"></script>
+    <script src="/js/app/app.js" asp-append-version="true"></script>
 }

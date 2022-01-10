@@ -231,6 +231,7 @@ namespace ApplicationHealth.Services.Managers
             catch (Exception ex)
             {
                 var res = UpdateAppStatus(app.AppDefId, DateTime.Now, false);
+                await _appNotificationService.SendNotification(app);
                 Console.WriteLine($"Name: {app.Name} Response: {ex.Message}");
                 _logger.LogError($"WorkerService ==> AppDefId: {app.AppDefId} güncellenirken hata oluştu");
             }
