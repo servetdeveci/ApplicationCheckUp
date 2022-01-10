@@ -22,12 +22,6 @@ Docker Desktop uygulası kurularak docker-compose.yml dosyası ile tüm proje ç
 ### Visual Studio ile Çalıştırılması
 Mevcut veritabanı sunucusuna DbContext migrate edilerek ve ConnectionString de gerekli değişiklikler yapılarak Visual Studio üzerinden çoklu proje çalıştırma seçeneği ile proje çalıştırılabilir.
 
-### .Net CLI ile Çalıştırılması
-Mevcut veritabanı sunucusuna DbContext migrate edilerek ve ConnectionString de gerekli değişiklikler yapılarak komut satırından proje çalıştırılabilir.
-Aşağıdaki gibi her bir proje gerekli dizinlere erişilerek çalıştırılabilir.
-
-`dotnet run --project ./PowerPlant/PowerPlant.API/PowerPlant.API.csproj`
-
 
 
 
