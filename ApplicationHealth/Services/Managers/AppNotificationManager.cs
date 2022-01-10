@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using ApplicationHealth.Domain.Enums;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace ApplicationHealth.Services.Managers
 {
@@ -22,19 +23,22 @@ namespace ApplicationHealth.Services.Managers
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IMailService _mailService;
         private readonly IAppContactService _appContactService;
-        public AppNotificationManager(IAppNotificationRepository appNotificationRepository, IAppUnitOfWork unitOfWork, IMailService mailService, IAppContactService appContactService)
+        private readonly ILogger<AppNotificationManager> _logger;
+
+        public AppNotificationManager(IAppNotificationRepository appNotificationRepository, IAppUnitOfWork unitOfWork, IMailService mailService, IAppContactService appContactService, ILogger<AppNotificationManager> logger)
         {
             _appNotificationRepository = appNotificationRepository;
             _unitOfWork = unitOfWork;
             _mailService = mailService;
             _appContactService = appContactService;
+            _logger = logger;
         }
 
-        public WebUIToast Add(AppNotification app)
+        public WebUIToast Add(AppNotification noti)
         {
             try
             {
-                _appNotificationRepository.Add(app);
+                _appNotificationRepository.Add(noti);
                 if (_unitOfWork.Commit() > 0)
                 {
                     return new WebUIToast
@@ -55,8 +59,10 @@ namespace ApplicationHealth.Services.Managers
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError($"{CrudTwinProperty.CREATE} ==> NotiAppId: {noti.AppDefId} oluşturulurken hata oluştu. ex: {ex}");
+
                 return new WebUIToast
                 {
                     header = "Başarısız",
@@ -92,6 +98,8 @@ namespace ApplicationHealth.Services.Managers
             }
             catch (Exception)
             {
+                _logger.LogError($"{CrudTwinProperty.DELETE} ==> notiId: {id} silinirken hata oluştu. ex: {ex}");
+
                 return new WebUIToast
                 {
                     header = "Başarısız",
@@ -102,58 +110,92 @@ namespace ApplicationHealth.Services.Managers
         }
         public AppNotificationDataTable GetNotificationDataTable(BaseFilterParameters filters)
         {
-            IQueryable<AppNotification> filteredData;
-            Expression<Func<AppNotification, bool>> expression = d => (string.IsNullOrEmpty(filters.mainFilter) || d.Message.ToLower().Contains(filters.mainFilter.ToLower()));
-            var totalCount = _appNotificationRepository.CountAll();
-            filteredData = _appNotificationRepository.Table.Where(expression).Include(d => d.AppDef).Include(m => m.Contact);
-            var filteredCount = filteredData.Count();
-
-            var newModel = filteredData.OrderBy(filters.sortColumnName + " " + filters.sortColumnDirection)
-                .Skip(filters.start).Take(filters.length).ToList();
-
-            var model = new AppNotificationDataTable
+            try
             {
-                data = newModel,
-                draw = filters.draw,
-                recordsFiltered = filteredCount,
-                recordsTotal = totalCount
-            };
+                IQueryable<AppNotification> filteredData;
+                Expression<Func<AppNotification, bool>> expression = d => (string.IsNullOrEmpty(filters.mainFilter) || d.Message.ToLower().Contains(filters.mainFilter.ToLower()));
+                var totalCount = _appNotificationRepository.CountAll();
+                filteredData = _appNotificationRepository.Table.Where(expression).Include(d => d.AppDef).Include(m => m.Contact);
+                var filteredCount = filteredData.Count();
 
+                var newModel = filteredData.OrderBy(filters.sortColumnName + " " + filters.sortColumnDirection)
+                    .Skip(filters.start).Take(filters.length).ToList();
+
+                var model = new AppNotificationDataTable
+                {
+                    data = newModel,
+                    draw = filters.draw,
+                    recordsFiltered = filteredCount,
+                    recordsTotal = totalCount
+                };
             return model;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.GET} ==> GetNotificationDataTable  ex: {ex}");
+
+                return null;
+            }
+
         }
         public AppNotification GetByFilter(Expression<Func<AppNotification, bool>> predicate)
         {
-            return _appNotificationRepository.Get(predicate);
+            try
+            {
+                return _appNotificationRepository.Get(predicate);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.GET} ==> GetByFilters  ex: {ex}");
+                return null;
+            }
         }
         public AppNotification GetById(int id)
         {
-            return _appNotificationRepository.GetById(id);
+            try
+            {
+                return _appNotificationRepository.GetById(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.GET} ==> GetById  ex: {ex}");
+                return null;
+            }
         }
         public async Task SendNotification(AppDef app)
         {
-            var interval = (int)(DateTime.Now - app.LastNotificationDateTime).TotalMinutes;
-            if (interval >= app.Interval)
+            try
             {
-                foreach (var cont in GetAppNotificationContact(app.AppDefId))
+                var interval = (int)(DateTime.Now - app.LastNotificationDateTime).TotalMinutes;
+                if (interval >= app.Interval)
                 {
-                    switch (cont.NotificationType)
+                    foreach (var cont in GetAppNotificationContact(app.AppDefId))
                     {
-                        case NotificationType.None:
-                            break;
-                        case NotificationType.Email:
-                            await GenerateEmailAndSend(app, cont);
-                            break;
-                        case NotificationType.Sms:
-                            break;
-                        case NotificationType.EmailSms:
-                            break;
-                        default:
-                            break;
+                        switch (cont.NotificationType)
+                        {
+                            case NotificationType.None:
+                                break;
+                            case NotificationType.Email:
+                                await GenerateEmailAndSend(app, cont);
+                                break;
+                            case NotificationType.Sms:
+                                break;
+                            case NotificationType.EmailSms:
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                }
 
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.CHECK} ==> SendNotification  ex: {ex}");
             }
 
+           
         }
         private async Task GenerateEmailAndSend(AppDef app, AppContact cont)
         {

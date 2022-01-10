@@ -6,6 +6,7 @@ using ApplicationHealth.Services.Services;
 using System;
 using System.Linq.Expressions;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace ApplicationHealth.Services.Managers
 {
@@ -13,16 +14,20 @@ namespace ApplicationHealth.Services.Managers
     {
         private readonly IAppContactRepository _appContactRepository;
         private readonly IAppUnitOfWork _unitOfWork;
-        public AppContactManager(IAppContactRepository AppContactRepository, IAppUnitOfWork unitOfWork)
+        private readonly ILogger<AppContactManager> _logger;
+
+        public AppContactManager(IAppContactRepository appContactRepository, IAppUnitOfWork unitOfWork, ILogger<AppContactManager> logger)
         {
-            _appContactRepository = AppContactRepository;
+            _appContactRepository = appContactRepository;
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
-        public WebUIToast Add(AppContact app)
+
+        public WebUIToast Add(AppContact cont)
         {
             try
             {
-                _appContactRepository.Add(app);
+                _appContactRepository.Add(cont);
                 if (_unitOfWork.Commit() > 0)
                 {
                     return new WebUIToast
@@ -43,8 +48,10 @@ namespace ApplicationHealth.Services.Managers
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError($"{CrudTwinProperty.CREATE} ==> ContactId: {cont.NotificationContactName} oluşturulurken hata oluştu. ex: {ex}");
+
                 return new WebUIToast
                 {
                     header = "Başarısız",
@@ -78,8 +85,10 @@ namespace ApplicationHealth.Services.Managers
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError($"{CrudTwinProperty.DELETE} ==> ContactId: {id} silinirken hata oluştu. ex: {ex}");
+
                 return new WebUIToast
                 {
                     header = "Başarısız",
@@ -90,16 +99,42 @@ namespace ApplicationHealth.Services.Managers
         }
         public List<AppContact> GetAll(Expression<Func<AppContact, bool>> predicate = null)
         {
-            return _appContactRepository.GetAll(predicate);
+            try
+            {
+                return _appContactRepository.GetAll(predicate);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.GET} ==> GetAll  ex: {ex}");
+                return null;
+            }
         }
         public AppContact GetByFilter(Expression<Func<AppContact, bool>> predicate)
         {
-            return _appContactRepository.Get(predicate);
+            try
+            {
+                return _appContactRepository.Get(predicate);
 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.GET} ==> GetByFilters  ex: {ex}");
+                return null;
+            }
         }
         public AppContact GetById(int id)
         {
-            return _appContactRepository.GetById(id);
+            try
+            {
+                return _appContactRepository.GetById(id);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{CrudTwinProperty.GET} ==> GetById  ex: {ex}");
+                return null;
+            }
         }
     }
 }
