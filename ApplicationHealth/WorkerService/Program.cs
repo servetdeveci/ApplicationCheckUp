@@ -17,7 +17,7 @@ namespace ApplicationHealth.WorkerService
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    var cs = @"Host=localhost;Port=5432;Database=AppHealth;Username=postgres;Password=pass";
+                    var cs = @"Host=database;Port=5432;Database=AppHealth;Username=postgres;Password=pass";
                     services.AddDatabase(cs).AddRepositories().AddEntityServices();
                     services.AddHostedService<Worker>();
 
